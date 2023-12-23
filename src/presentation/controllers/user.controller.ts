@@ -1,5 +1,4 @@
 import { Body, Controller, Post, Req } from '@nestjs/common';
-import { UserRequest } from '../../infrastructure/external/express/user.request';
 import { InstallExtensionRequest } from '../requests/users/install-extension.request';
 import {
   ApiCreatedResponse,
@@ -11,11 +10,15 @@ import {
 import { Throttle } from '@nestjs/throttler';
 import { InstallExtensionResponse } from '../responses/users/install-extension.response';
 import { AuthErrorResponse, UnprocessableErrorResponse } from '../responses/response';
+import { InstallExtensionAction } from '../../application/users/install-extension.action';
+import { Request } from 'express';
+import { Locale } from '../../infrastructure/decorators/locale.decorator';
 
 @Controller('users')
 @ApiTags('users')
-// @UseGuards(AuthGuard)
 export class UserController {
+  constructor(private readonly installExtensionAction: InstallExtensionAction) {}
+
   @Post('installs')
   @ApiCreatedResponse({ description: 'The record has been successfully created', type: InstallExtensionResponse })
   @ApiOperation({
@@ -26,8 +29,11 @@ export class UserController {
   @ApiUnprocessableEntityResponse({ type: UnprocessableErrorResponse, description: 'Validation error' })
   public async installExtension(
     @Body() body: InstallExtensionRequest,
-    @Req() req: UserRequest,
-  ): Promise<InstallExtensionResponse | any> {
-    console.log(req.user);
+    @Req() req: Request,
+    @Locale() locale: string,
+  ): Promise<InstallExtensionResponse> {
+    const userAgent = req.headers['user-agent']?.toString() ?? null;
+
+    return this.installExtensionAction.execute(body.browser, locale, userAgent);
   }
 }

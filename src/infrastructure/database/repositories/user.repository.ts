@@ -12,4 +12,8 @@ export class UserRepository extends Repository<UserEntity> {
   ) {
     super(repository.target, repository.manager, repository.queryRunner);
   }
+
+  public async findById(id: number): Promise<UserEntity> {
+    return this.findOneBy({ id });
+  }
 }

@@ -12,4 +12,9 @@ export class InstallExtensionResponse {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o',
   })
   public token: string;
+
+  constructor(uuid: string, token: string) {
+    this.uuid = uuid;
+    this.token = token;
+  }
 }

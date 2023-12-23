@@ -25,7 +25,7 @@ export class PostgresConfig implements TypeOrmOptionsFactory {
         ],
       },
 
-      entities: ['dist/infrastructure/database/mappers/*.js'],
+      entities: ['dist/infrastructure/database/mappers/**/*.js'],
 
       synchronize: false,
 

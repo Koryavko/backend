@@ -5,6 +5,8 @@ export class UserEntity {
 
   public locale: string;
 
+  public currentLocale: string;
+
   public uuid: string;
 
   public browser: BrowserEnum;

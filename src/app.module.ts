@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlersConfig } from './infrastructure/configs/throttlers';
 import { ConfigModule } from '@nestjs/config';
@@ -7,9 +7,7 @@ import { PostgresConfig } from './infrastructure/configs/postgres';
 import { CacheModule } from '@nestjs/cache-manager';
 import { RedisConfig } from './infrastructure/configs/redis';
 import { UserModule } from './infrastructure/ioc/user.module';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtConfig } from './infrastructure/configs/jwt';
-import { UserLocaleMiddleware } from './infrastructure/rest/middlewares/user-locale.middleware';
+import { DomainModule } from './infrastructure/ioc/domain.module';
 
 @Module({
   imports: [
@@ -26,19 +24,10 @@ import { UserLocaleMiddleware } from './infrastructure/rest/middlewares/user-loc
       isGlobal: true,
       useClass: RedisConfig,
     }),
-    JwtModule.registerAsync({
-      global: true,
-      useClass: JwtConfig,
-    }),
     UserModule,
+    DomainModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  public configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(UserLocaleMiddleware).forRoutes('*');
-  }
-}
-{
-}
+export class AppModule {}

@@ -24,6 +24,11 @@ export const UserMapper = new EntitySchema<UserEntity>({
       length: 255,
       name: 'user_agent',
     },
+    locale: {
+      type: String,
+      length: 2,
+      nullable: true,
+    },
   },
   orderBy: {
     id: 'ASC',
