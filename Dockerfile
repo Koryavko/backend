@@ -24,7 +24,6 @@ ENV NODE_ENV production
 
 COPY --chown=node:node package*.json ./
 COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=development /usr/src/app/maxmind ./maxmind
 COPY --chown=node:node . .
 
 RUN npm run build
@@ -42,7 +41,6 @@ WORKDIR /usr/src/app
 
 RUN apk --no-cache add curl
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/maxmind ./maxmind
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
 CMD [ "node", "dist/main.js" ]
