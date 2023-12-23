@@ -3,7 +3,11 @@ import { Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 export class PostgresConfig implements TypeOrmOptionsFactory {
-  constructor(@Inject(ConfigService) private readonly configService: ConfigService) {}
+  constructor(@Inject(ConfigService) private readonly configService: ConfigService) {
+    if (!this.configService.get('DATABASE_URL')) {
+      throw new Error('DATABASE_URL is not defined');
+    }
+  }
 
   public createTypeOrmOptions(): TypeOrmModuleOptions {
     const isLocalEnv = this.configService.get('APP_ENV') === 'local';

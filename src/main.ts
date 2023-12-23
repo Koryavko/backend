@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as compression from 'compression';
 import helmet from 'helmet';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as basicAuth from 'express-basic-auth';
 
@@ -36,6 +36,12 @@ async function bootstrap(): Promise<void> {
     if (process.env.NODE_ENV !== 'production' && url.toString().includes('localhost')) {
       url.protocol = 'http';
     }
+
+    /*
+     * Middlewares
+     */
+
+    app.useGlobalPipes(new ValidationPipe());
 
     /*
      * Swagger

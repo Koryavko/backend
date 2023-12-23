@@ -6,7 +6,11 @@ import { createClient, RedisClientOptions, RedisClientType } from 'redis';
 import { redisInsStore } from 'cache-manager-redis-yet';
 
 export class RedisConfig implements CacheOptionsFactory {
-  constructor(@Inject(ConfigService) private readonly configService: ConfigService) {}
+  constructor(@Inject(ConfigService) private readonly configService: ConfigService) {
+    if (!this.configService.get('REDIS_URL')) {
+      throw new Error('REDIS_URL is not defined');
+    }
+  }
 
   public async createCacheOptions(): Promise<CacheModuleOptions<Record<string, unknown>>> {
     const options = <RedisClientOptions>{

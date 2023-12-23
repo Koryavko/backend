@@ -8,7 +8,11 @@ import { ConfigService } from '@nestjs/config';
 import { Inject } from '@nestjs/common';
 
 export class ThrottlersConfig implements ThrottlerOptionsFactory {
-  constructor(@Inject(ConfigService) private readonly configService: ConfigService) {}
+  constructor(@Inject(ConfigService) private readonly configService: ConfigService) {
+    if (!this.configService.get('REDIS_URL')) {
+      throw new Error('REDIS_URL is not defined');
+    }
+  }
 
   public createThrottlerOptions(): ThrottlerModuleOptions {
     const options: RedisOptions = {};
