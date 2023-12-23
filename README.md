@@ -1,73 +1,59 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Introduction
+* The first project startup requires:
+    * `nvm use 20`
+    * `git checkout develop`
+    * `npm ci`
+    * Add variables to **`.env`**: 
+      * `APP_ENV=local`
+      * `APP_NAME=Koryavko`
+      * `API_URL=localhost:3000`
+      * `PORT=3000`
+      * `REDIS_URL=redis://:root@redis:6379`
+      * `DATABASE_URL=postgres://testuser:testpassword@postgres:5432/main_db`
+    * `docker compose up -d`
+      * In case of an error when starting the application that there is no main_db table, create it manually
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Technologies
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+* Node 20.10
+* [NestJS](https://docs.nestjs.com/)
+* Postgres
+* Redis
 
-## Description
+## Structure
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Project has 4 layers:
 
-## Installation
+* Domain
+    * This layer contains primary logic of the project:
+        * Entities
+        * Enums
+        * Services and logic
+        * Common interfaces
+        * Common DTOs and VOs
+* Presentation
+    * This layer accepts requests via the HTTP protocol
+* Infrastructure
+    * This layer contains:
+        * Classes for external services
+        * Database migrations
+        * Data mappers
+        * Nestjs modules and components
+        * Health check endpoint
+* Application
+    * This layer contains *use cases* of this service
 
-```bash
-$ npm install
+## Good-to-knows
+
+* Service has feature tests for some services and actions
+    * `npm run test`
+* To create a migration you need to execute the command
+  * `NAME=SetTableNameOrActionForTable npm run migrate:create`
+* The project uses git flow. To start it, run the command:
+  * `git flow init`
+
+If in directory *.husky* doesn't exist file *pre-commit*, run the command:
+```shell
+npx husky add .husky/pre-commit "npm run lint-staged"
 ```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+[Manual install](https://typicode.github.io/husky/#/?id=install) of hasky pre-commit hooks.
