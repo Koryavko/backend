@@ -19,19 +19,33 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky install",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "migrate:create": "typeorm migration:create src/infrastructure/database/migrations/${NAME}"
   },
   "dependencies": {
+    "@nestjs/bull": "^10.0.1",
+    "@nestjs/cache-manager": "^2.1.1",
     "@nestjs/common": "^10.3.0",
+    "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.3.0",
     "@nestjs/platform-express": "^10.3.0",
+    "@nestjs/throttler": "^5.1.1",
+    "@nestjs/typeorm": "^10.0.1",
     "body-parser": "^1.20.2",
+    "bull": "^4.12.0",
+    "cache-manager": "^5.3.2",
+    "cache-manager-redis-yet": "^4.1.2",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "express-rate-limit": "^7.1.5",
     "helmet": "^7.1.0",
+    "ioredis": "^5.3.2",
+    "nestjs-throttler-storage-redis": "^0.4.1",
+    "pg": "^8.11.3",
+    "redis": "^4.6.12",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.2.1",
