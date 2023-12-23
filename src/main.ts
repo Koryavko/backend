@@ -47,13 +47,24 @@ async function bootstrap(): Promise<void> {
       )
       .setVersion('1.0')
       .addTag('users')
-      .addApiKey(
+      // .addApiKey(
+      //   {
+      //     type: 'apiKey', // this should be apiKey
+      //     name: 'user-uuid', // this is the name of the key you expect in header
+      //     in: 'header',
+      //   },
+      //   'user-uuid', // this is the name to show and used in swagger + to controller @ApiSecurity('user-uuid')
+      // )
+      .addBearerAuth(
         {
-          type: 'apiKey', // this should be apiKey
-          name: 'user-uuid', // this is the name of the key you expect in header
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'JWT',
+          description: 'Enter JWT token',
           in: 'header',
         },
-        'user-uuid', // this is the name to show and used in swagger + to controller @ApiSecurity('user-uuid')
+        'access-token', // This name here is important for matching up with @ApiBearerAuth() in your controller!
       )
       .addServer(`${url.toString()}api`)
       .build();
