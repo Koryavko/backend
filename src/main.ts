@@ -7,6 +7,9 @@ import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as basicAuth from 'express-basic-auth';
+import { LoggingInterceptor } from './infrastructure/rest/interseptors/logging.interceptor';
+import { GlobalExceptionFilter } from './infrastructure/rest/filters/global-exception.filter';
+import { ValidationFormatPipe } from './infrastructure/rest/pipes/validation-format.pipe';
 
 declare const module: any;
 
@@ -38,10 +41,17 @@ async function bootstrap(): Promise<void> {
     }
 
     /*
-     * Middlewares
+     * REST Global configurations
      */
 
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalInterceptors(new LoggingInterceptor());
+    app.useGlobalFilters(new GlobalExceptionFilter());
+    app.useGlobalPipes(new ValidationFormatPipe());
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+      }),
+    );
 
     /*
      * Swagger
@@ -53,25 +63,8 @@ async function bootstrap(): Promise<void> {
       )
       .setVersion('1.0')
       .addTag('users')
-      // .addApiKey(
-      //   {
-      //     type: 'apiKey', // this should be apiKey
-      //     name: 'user-uuid', // this is the name of the key you expect in header
-      //     in: 'header',
-      //   },
-      //   'user-uuid', // this is the name to show and used in swagger + to controller @ApiSecurity('user-uuid')
-      // )
-      .addBearerAuth(
-        {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-          name: 'JWT',
-          description: 'Enter JWT token',
-          in: 'header',
-        },
-        'access-token', // This name here is important for matching up with @ApiBearerAuth() in your controller!
-      )
+      .addTag('domains')
+      .addBearerAuth()
       .addServer(`${url.toString()}api`)
       .build();
     const document = SwaggerModule.createDocument(app, config);

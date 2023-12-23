@@ -14,12 +14,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public async validate(payload: any): Promise<UserEntity> {
+  public async validate(payload: Record<string, unknown>): Promise<UserEntity> {
     if (!payload.id) {
       return null;
     }
 
-    const user = await this.userRepository.findById(payload.id);
+    const user = await this.userRepository.findById(Number(payload.id));
     if (!user) {
       return null;
     }
