@@ -54,7 +54,7 @@ async function bootstrap(): Promise<void> {
     await app.listen(PORT);
 
     const url = new URL(`https://${configService.get('API_URL')}`);
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production' && url.toString().includes('localhost')) {
       url.protocol = 'http';
     }
     Logger.log(`🚀  Server ready at ${url.toString()}`);
