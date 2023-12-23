@@ -73,7 +73,7 @@ async function bootstrap(): Promise<void> {
     });
 
     const apiUser = configService.get('API_DOC_USER', 'admin');
-    const apiPass = configService.get('API_DOC_PASSWORD', '7f4SfmhuiwqzyM'); // 7f4SfmhuiwqzyM
+    const apiPass = configService.get('API_DOC_PASSWORD', 'tNR8QRqaj*&AsWoc5$@n');
 
     app.use(
       '/api/docs',
