@@ -2,7 +2,7 @@
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
 
-FROM node:18.16-alpine3.17 AS development
+FROM node:20.10-alpine3.19 AS development
 
 WORKDIR /usr/src/app
 
@@ -16,7 +16,7 @@ USER node
 # BUILD FOR PRODUCTION
 ###################
 
-FROM node:18.16-alpine3.17 AS build
+FROM node:20.10-alpine3.19 AS build
 
 WORKDIR /usr/src/app
 
@@ -36,7 +36,7 @@ USER node
 # PRODUCTION
 ###################
 
-FROM node:18.16-alpine3.17 as production
+FROM node:20.10-alpine3.19 as production
 
 WORKDIR /usr/src/app
 
