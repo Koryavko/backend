@@ -11,6 +11,8 @@ services:
       target: development
     networks:
       - backend
+    ports:
+      - ${PORT}:${PORT}
     depends_on:
       - redis
       - postgres
