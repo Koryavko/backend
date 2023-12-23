@@ -46,5 +46,11 @@ module.exports = {
       { "exceptAfterSingleLine": false }
     ],
     'curly': "error",
+    'camelcase': "error",
+    'default-case': "error",
+    'eqeqeq': ["error", "always"],
+    'no-console': "error",
+    'no-eq-null': "error",
+    'no-lonely-if': "error",
   },
 };
