@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as basicAuth from 'express-basic-auth';
 
 declare const module: any;
 
@@ -31,6 +32,11 @@ async function bootstrap(): Promise<void> {
       }),
     );
 
+    const url = new URL(`https://${configService.get('API_URL')}`);
+    if (process.env.NODE_ENV !== 'production' && url.toString().includes('localhost')) {
+      url.protocol = 'http';
+    }
+
     /*
      * Swagger
      */
@@ -41,11 +47,31 @@ async function bootstrap(): Promise<void> {
       )
       .setVersion('1.0')
       .addTag('users')
+      .addApiKey(
+        {
+          type: 'apiKey', // this should be apiKey
+          name: 'user-uuid', // this is the name of the key you expect in header
+          in: 'header',
+        },
+        'user-uuid', // this is the name to show and used in swagger + to controller @ApiSecurity('user-uuid')
+      )
+      .addServer(`${url.toString()}api`)
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document, {
       useGlobalPrefix: true,
     });
+
+    const apiUser = configService.get('API_DOC_USER', 'admin');
+    const apiPass = configService.get('API_DOC_PASSWORD', '7f4SfmhuiwqzyM'); // 7f4SfmhuiwqzyM
+
+    app.use(
+      '/api/docs',
+      basicAuth({
+        challenge: true,
+        users: { [apiUser]: apiPass },
+      }),
+    );
 
     /*
      * Start server
@@ -53,10 +79,6 @@ async function bootstrap(): Promise<void> {
     const PORT = +configService.get<string>('PORT', '3000');
     await app.listen(PORT);
 
-    const url = new URL(`https://${configService.get('API_URL')}`);
-    if (process.env.NODE_ENV !== 'production' && url.toString().includes('localhost')) {
-      url.protocol = 'http';
-    }
     Logger.log(`🚀  Server ready at ${url.toString()}`);
 
     if (module.hot) {
