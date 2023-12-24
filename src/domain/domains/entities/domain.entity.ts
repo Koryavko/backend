@@ -1,4 +1,5 @@
 import { DomainTypeEnum } from '../enums/domain-type.enum';
+import { YamlSchemaEntity } from '../../yaml-schemas/entities/yaml-schema.entity';
 
 export class DomainEntity {
   public id: number;
@@ -12,6 +13,8 @@ export class DomainEntity {
   public rating: number;
 
   public type: DomainTypeEnum;
+
+  public yamlSchema: YamlSchemaEntity;
 
   public createdAt: Date;
 

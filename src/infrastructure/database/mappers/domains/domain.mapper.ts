@@ -43,5 +43,11 @@ export const DomainMapper = new EntitySchema<DomainEntity>({
   orderBy: {
     id: 'ASC',
   },
-  relations: {},
+  relations: {
+    yamlSchema: {
+      type: 'one-to-one',
+      target: 'YamlSchemaEntity',
+      inverseSide: 'domain',
+    },
+  },
 });

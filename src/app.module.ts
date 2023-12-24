@@ -8,6 +8,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { RedisConfig } from './infrastructure/configs/redis';
 import { UserModule } from './infrastructure/ioc/user.module';
 import { DomainModule } from './infrastructure/ioc/domain.module';
+import { YamlModule } from './infrastructure/ioc/yaml.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DomainModule } from './infrastructure/ioc/domain.module';
     }),
     UserModule,
     DomainModule,
+    YamlModule,
   ],
   controllers: [],
   providers: [],

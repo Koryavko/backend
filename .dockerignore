@@ -21,3 +21,5 @@ nodemon.json
 # Maxmind
 maxmind/*
 *GeoLite2*
+
+koryavko-8fff5f1cdf91.json

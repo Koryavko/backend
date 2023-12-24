@@ -1,5 +1,5 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { UserRequest } from '../../infrastructure/external/express/user.request';
+import { UserRequest } from '../../infrastructure/external/modules/express/user.request';
 import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { AuthErrorResponse, TooManyRequestsResponse } from '../responses/response';

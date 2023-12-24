@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRequest } from '../../external/express/user.request';
+import { UserRequest } from '../../external/modules/express/user.request';
 import { isUUID } from 'class-validator';
 import { UserRepository } from '../../database/repositories/users/user.repository';
 

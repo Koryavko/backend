@@ -25,4 +25,12 @@ export class DomainRepository extends Repository<DomainEntity> {
       take: 10,
     });
   }
+
+  public async findOneByDomain(domain: string): Promise<DomainEntity> {
+    return this.findOne({
+      where: {
+        domain: domain,
+      },
+    });
+  }
 }
