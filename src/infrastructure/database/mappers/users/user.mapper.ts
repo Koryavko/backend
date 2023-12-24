@@ -2,6 +2,7 @@ import { EntitySchema } from 'typeorm';
 import { BaseMapper } from '../base.mapper';
 import { UserEntity } from '../../../../domain/users/entity/user.entity';
 import { BrowserEnum } from '../../../../domain/users/enums/browser.enum';
+import { PlatformEnum } from '../../../../domain/users/enums/platform.enum';
 
 export const UserMapper = new EntitySchema<UserEntity>({
   name: 'UserEntity',
@@ -18,6 +19,12 @@ export const UserMapper = new EntitySchema<UserEntity>({
       type: 'enum',
       enum: BrowserEnum,
       nullable: false,
+    },
+    platform: {
+      type: 'enum',
+      enum: PlatformEnum,
+      nullable: false,
+      default: PlatformEnum.EXTENSION,
     },
     userAgent: {
       type: String,

@@ -1,4 +1,5 @@
 import { BrowserEnum } from '../enums/browser.enum';
+import { PlatformEnum } from '../enums/platform.enum';
 
 export class UserEntity {
   public id: number;
@@ -11,6 +12,8 @@ export class UserEntity {
 
   public browser: BrowserEnum;
 
+  public platform: PlatformEnum;
+
   public userAgent: string;
 
   public createdAt: Date;
@@ -19,9 +22,10 @@ export class UserEntity {
 
   public deletedAt: Date;
 
-  constructor(locale: string, userAgent: string, browser: BrowserEnum) {
+  constructor(locale: string, userAgent: string, browser: BrowserEnum, platform: PlatformEnum) {
     this.locale = locale;
     this.browser = browser;
+    this.platform = platform;
     this.userAgent = userAgent;
     this.createdAt = new Date();
     this.updatedAt = new Date();

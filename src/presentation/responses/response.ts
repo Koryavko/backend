@@ -73,3 +73,11 @@ export class ServiceUnavailableResponse extends ErrorResponse {
   @ApiProperty({ example: 'Third party api error' })
   public message: string;
 }
+
+export class TooManyRequestsResponse extends ErrorResponse {
+  @ApiProperty({ example: HttpStatus.TOO_MANY_REQUESTS })
+  public code: number;
+
+  @ApiProperty({ example: 'Too many requests' })
+  public message: string;
+}

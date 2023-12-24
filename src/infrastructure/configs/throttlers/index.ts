@@ -26,8 +26,19 @@ export class ThrottlersConfig implements ThrottlerOptionsFactory {
     return {
       throttlers: [
         {
-          ttl: 60,
-          limit: 10,
+          name: 'short',
+          ttl: 1000,
+          limit: 20,
+        },
+        {
+          name: 'medium',
+          ttl: 60000, // 1 minute
+          limit: 100,
+        },
+        {
+          name: 'long',
+          ttl: 3600000, // 1 hour
+          limit: 1000,
         },
       ],
       storage: new ThrottlerStorageRedisService(new Redis(path, options)),

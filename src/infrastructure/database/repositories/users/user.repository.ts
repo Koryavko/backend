@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '../../../domain/users/entity/user.entity';
-import { UserMapper } from '../mappers/users/user.mapper';
+import { UserEntity } from '../../../../domain/users/entity/user.entity';
+import { UserMapper } from '../../mappers/users/user.mapper';
 
 @Injectable()
 export class UserRepository extends Repository<UserEntity> {
@@ -13,7 +13,7 @@ export class UserRepository extends Repository<UserEntity> {
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
-  public async findById(id: number): Promise<UserEntity> {
-    return this.findOneBy({ id });
+  public async findByUUID(uuid: string): Promise<UserEntity> {
+    return this.findOneBy({ uuid });
   }
 }

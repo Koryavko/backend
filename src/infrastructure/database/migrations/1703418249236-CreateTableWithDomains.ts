@@ -1,12 +1,11 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
-import { BrowserEnum } from '../../../domain/users/enums/browser.enum';
-import { PlatformEnum } from '../../../domain/users/enums/platform.enum';
+import { DomainTypeEnum } from '../../../domain/domains/enums/domain-type.enum';
 
-export class CreateUsersTable1703343592631 implements MigrationInterface {
+export class CreateTableWithDomains1703418249236 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'domains',
         columns: [
           {
             name: 'id',
@@ -16,29 +15,32 @@ export class CreateUsersTable1703343592631 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'uuid',
-            type: 'uuid',
-            default: 'gen_random_uuid()',
-          },
-          {
-            name: 'user_agent',
+            name: 'domain',
             type: 'varchar(255)',
-          },
-          {
-            name: 'browser',
-            type: 'enum',
-            enum: Object.values(BrowserEnum),
-          },
-          {
-            name: 'locale',
-            type: 'varchar(2)',
-            isNullable: true,
-          },
-          {
-            name: 'platform',
-            type: 'enum',
-            enum: Object.values(PlatformEnum),
             isNullable: false,
+          },
+          {
+            name: 'main_page',
+            type: 'varchar(255)',
+            isNullable: false,
+          },
+          {
+            name: 'logo',
+            type: 'varchar(2048)',
+            isNullable: false,
+          },
+          {
+            name: 'rating',
+            type: 'int',
+            default: 0,
+            isNullable: false,
+          },
+          {
+            name: 'type',
+            type: 'enum',
+            enum: Object.values(DomainTypeEnum),
+            isNullable: false,
+            default: `'${DomainTypeEnum.WORLD}'`,
           },
           {
             name: 'created_at',
@@ -62,16 +64,16 @@ export class CreateUsersTable1703343592631 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'users',
+      'domains',
       new TableIndex({
-        name: 'users_uuid_unique',
+        name: 'users_domain_unique',
         isUnique: true,
-        columnNames: ['uuid'],
+        columnNames: ['domain'],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('domains');
   }
 }

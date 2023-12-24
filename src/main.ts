@@ -64,8 +64,8 @@ async function bootstrap(): Promise<void> {
       .setVersion('1.0')
       .addTag('users')
       .addTag('domains')
-      .addBearerAuth()
-      .addServer(`${url.toString()}api`)
+      .addApiKey({ type: 'apiKey', name: 'user-uuid', in: 'header' }, 'user-uuid')
+      .addServer(`${url.origin}`)
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document, {

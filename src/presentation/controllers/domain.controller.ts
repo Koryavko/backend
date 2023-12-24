@@ -1,16 +1,25 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../infrastructure/rest/guards/jwt-auth.guard';
 import { UserRequest } from '../../infrastructure/external/express/user.request';
 import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { AuthErrorResponse, TooManyRequestsResponse } from '../responses/response';
+import { ApiTooManyRequestsResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
+import { GetPopularDomainsResponse } from '../responses/domains/get-popular-domains.response';
+import { GetPopularDomainsAction } from '../../application/domains/get-popular-domains.action';
 
 @Controller('domains')
 @ApiBearerAuth()
 @ApiTags('domains')
-@UseGuards(JwtAuthGuard, UserGuard)
+@UseGuards(UserGuard)
+@ApiUnauthorizedResponse({ type: AuthErrorResponse, description: 'Unauthorized error' })
+@ApiTooManyRequestsResponse({ type: TooManyRequestsResponse, description: 'Too many requests' })
 export class DomainController {
-  @Get()
-  public async getDomains(@Req() req: UserRequest): Promise<any> {
-    return req.user;
+  constructor(private readonly getPopularDomainsAction: GetPopularDomainsAction) {}
+
+  @Get('populars')
+  @ApiOperation({ summary: `Getting a list of popular domains` })
+  @ApiOkResponse({ description: 'Successfully obtained the list of popular domains', type: GetPopularDomainsResponse })
+  public async getPopularDomains(@Req() req: UserRequest): Promise<GetPopularDomainsResponse> {
+    return this.getPopularDomainsAction.execute(req.user.currentLocale);
   }
 }
