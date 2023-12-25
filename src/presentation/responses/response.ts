@@ -46,7 +46,7 @@ export class NotFoundResponse extends ErrorResponse {
   @ApiProperty({ example: HttpStatus.NOT_FOUND })
   public code: number;
 
-  @ApiProperty({ example: 'Conflict error' })
+  @ApiProperty({ example: 'Not found' })
   public message: string;
 }
 

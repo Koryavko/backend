@@ -9,6 +9,9 @@ import { RedisConfig } from './infrastructure/configs/redis';
 import { UserModule } from './infrastructure/ioc/user.module';
 import { DomainModule } from './infrastructure/ioc/domain.module';
 import { YamlModule } from './infrastructure/ioc/yaml.module';
+import { SyncSheetModule } from './infrastructure/ioc/sync-sheet.module';
+import { BullModule } from '@nestjs/bull';
+import { BullConfig } from './infrastructure/configs/bull';
 
 @Module({
   imports: [
@@ -25,9 +28,13 @@ import { YamlModule } from './infrastructure/ioc/yaml.module';
       isGlobal: true,
       useClass: RedisConfig,
     }),
+    BullModule.forRootAsync({
+      useClass: BullConfig,
+    }),
     UserModule,
     DomainModule,
     YamlModule,
+    SyncSheetModule,
   ],
   controllers: [],
   providers: [],

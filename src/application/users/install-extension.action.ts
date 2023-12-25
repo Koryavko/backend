@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BrowserEnum } from '../../domain/users/enums/browser.enum';
 import { InstallExtensionResponse } from '../../presentation/responses/users/install-extension.response';
-import { UserEntity } from '../../domain/users/entity/user.entity';
+import { UserEntity } from '../../domain/users/entities/user.entity';
 import { UserRepository } from '../../infrastructure/database/repositories/users/user.repository';
 import { PlatformEnum } from '../../domain/users/enums/platform.enum';
 

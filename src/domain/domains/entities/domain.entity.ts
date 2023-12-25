@@ -1,5 +1,6 @@
 import { DomainTypeEnum } from '../enums/domain-type.enum';
 import { YamlSchemaEntity } from '../../yaml-schemas/entities/yaml-schema.entity';
+import { ProductPageFootprintEntity } from '../../product-page-footprints/entities/product-page-footprint.entity';
 
 export class DomainEntity {
   public id: number;
@@ -15,6 +16,8 @@ export class DomainEntity {
   public type: DomainTypeEnum;
 
   public yamlSchema: YamlSchemaEntity;
+
+  public productFootprints: ProductPageFootprintEntity[];
 
   public createdAt: Date;
 

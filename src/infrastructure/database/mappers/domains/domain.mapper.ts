@@ -47,6 +47,15 @@ export const DomainMapper = new EntitySchema<DomainEntity>({
     yamlSchema: {
       type: 'one-to-one',
       target: 'YamlSchemaEntity',
+      onDelete: 'CASCADE',
+      cascade: true,
+      inverseSide: 'domain',
+    },
+    productFootprints: {
+      type: 'one-to-many',
+      onDelete: 'CASCADE',
+      cascade: true,
+      target: 'ProductPageFootprintEntity',
       inverseSide: 'domain',
     },
   },

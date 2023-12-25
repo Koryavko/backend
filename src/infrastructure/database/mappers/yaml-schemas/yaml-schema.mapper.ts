@@ -58,7 +58,6 @@ export const YamlSchemaMapper = new EntitySchema<YamlSchemaEntity>({
       joinColumn: {
         name: 'domain_id',
       },
-      cascade: true,
     },
   },
 });

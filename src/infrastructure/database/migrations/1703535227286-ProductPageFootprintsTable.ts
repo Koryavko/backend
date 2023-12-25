@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
 
-export class CreateYamlSchemasTable1703494956986 implements MigrationInterface {
+export class ProductPageFootprintsTable1703535227286 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'yaml_schemas',
+        name: 'product_page_footprints',
         columns: [
           {
             name: 'id',
@@ -16,51 +16,22 @@ export class CreateYamlSchemasTable1703494956986 implements MigrationInterface {
           {
             name: 'domain_name',
             type: 'varchar(255)',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'domain_id',
             type: 'bigint',
-            isNullable: false,
-          },
-          {
-            name: 'title',
-            type: 'jsonb',
-            isNullable: false,
-          },
-          {
-            name: 'image',
-            type: 'jsonb',
-            isNullable: false,
-          },
-          {
-            name: 'price',
-            type: 'jsonb',
-            isNullable: false,
-          },
-          {
-            name: 'color',
-            type: 'jsonb',
             isNullable: true,
           },
           {
-            name: 'currency',
-            type: 'jsonb',
-            isNullable: true,
-          },
-          {
-            name: 'default_currency',
-            type: 'varchar(36)',
+            name: 'footprint',
+            type: 'text',
             isNullable: false,
           },
           {
-            name: 'size',
-            type: 'jsonb',
-            isNullable: true,
-          },
-          {
-            name: 'availability',
-            type: 'jsonb',
+            name: 'is_synced',
+            type: 'boolean',
+            default: true,
             isNullable: false,
           },
           {
@@ -85,7 +56,7 @@ export class CreateYamlSchemasTable1703494956986 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'yaml_schemas',
+      'product_page_footprints',
       new TableForeignKey({
         columnNames: ['domain_id'],
         referencedColumnNames: ['id'],
@@ -94,25 +65,22 @@ export class CreateYamlSchemasTable1703494956986 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'yaml_schemas',
+      'product_page_footprints',
       new TableIndex({
-        name: 'users_domain_name_unique',
-        isUnique: true,
+        name: 'product_page_footprints_domain_name',
         columnNames: ['domain_name'],
       }),
     );
-
     await queryRunner.createIndex(
-      'yaml_schemas',
+      'product_page_footprints',
       new TableIndex({
-        name: 'users_domain_id_unique',
-        isUnique: true,
+        name: 'product_page_footprints_domain_id',
         columnNames: ['domain_id'],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('yaml_schemas');
+    await queryRunner.dropTable('product_page_footprints');
   }
 }

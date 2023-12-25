@@ -1,6 +1,6 @@
 import { EntitySchema } from 'typeorm';
 import { BaseMapper } from '../base.mapper';
-import { UserEntity } from '../../../../domain/users/entity/user.entity';
+import { UserEntity } from '../../../../domain/users/entities/user.entity';
 import { BrowserEnum } from '../../../../domain/users/enums/browser.enum';
 import { PlatformEnum } from '../../../../domain/users/enums/platform.enum';
 
