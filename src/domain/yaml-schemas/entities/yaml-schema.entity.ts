@@ -3,6 +3,8 @@ import { DomainEntity } from '../../domains/entities/domain.entity';
 export class YamlSchemaEntity {
   public id: number;
 
+  public domainName: string;
+
   public domain: DomainEntity;
 
   public title: Record<string, unknown>;
@@ -19,6 +21,8 @@ export class YamlSchemaEntity {
 
   public size: Record<string, unknown>;
 
+  public defaultCurrency: string;
+
   public createdAt: Date;
 
   public updatedAt: Date;
@@ -27,6 +31,7 @@ export class YamlSchemaEntity {
 
   constructor(
     domain: DomainEntity,
+    domainName: string,
     title: Record<string, unknown>,
     image: Record<string, unknown>,
     price: Record<string, unknown>,
@@ -34,8 +39,10 @@ export class YamlSchemaEntity {
     availability: Record<string, unknown>,
     size: Record<string, unknown>,
     currency: Record<string, unknown>,
+    defaultCurrency: string,
   ) {
     this.domain = domain;
+    this.domainName = domainName;
     this.title = title;
     this.image = image;
     this.price = price;
@@ -43,6 +50,7 @@ export class YamlSchemaEntity {
     this.availability = availability;
     this.size = size;
     this.currency = currency;
+    this.defaultCurrency = defaultCurrency;
     this.createdAt = new Date();
     this.updatedAt = new Date();
     this.deletedAt = null;

@@ -15,10 +15,10 @@ export const DomainMapper = new EntitySchema<DomainEntity>({
       length: 255,
       nullable: false,
     },
-    page: {
-      name: 'main_page',
+    url: {
+      name: 'url',
       type: String,
-      length: 255,
+      length: 2048,
       nullable: false,
     },
     logo: {

@@ -4,10 +4,15 @@ import { YamlSchemaEntity } from '../../../../domain/yaml-schemas/entities/yaml-
 
 export const YamlSchemaMapper = new EntitySchema<YamlSchemaEntity>({
   name: 'YamlSchemaEntity',
-  tableName: 'yaml-schemas',
+  tableName: 'yaml_schemas',
   target: YamlSchemaEntity,
   columns: {
     ...BaseMapper,
+    domainName: {
+      type: String,
+      nullable: false,
+      name: 'domain_name',
+    },
     title: {
       type: 'jsonb',
       nullable: false,
@@ -22,7 +27,7 @@ export const YamlSchemaMapper = new EntitySchema<YamlSchemaEntity>({
     },
     color: {
       type: 'jsonb',
-      nullable: false,
+      nullable: true,
     },
     availability: {
       type: 'jsonb',
@@ -30,11 +35,16 @@ export const YamlSchemaMapper = new EntitySchema<YamlSchemaEntity>({
     },
     currency: {
       type: 'jsonb',
-      nullable: false,
+      nullable: true,
     },
     size: {
       type: 'jsonb',
+      nullable: true,
+    },
+    defaultCurrency: {
+      type: String,
       nullable: false,
+      name: 'default_currency',
     },
   },
   orderBy: {

@@ -6,7 +6,7 @@ export class DomainEntity {
 
   public domain: string;
 
-  public page: string;
+  public url: string;
 
   public logo: string;
 
@@ -22,9 +22,9 @@ export class DomainEntity {
 
   public deletedAt: Date;
 
-  constructor(domain: string, page: string, logo: string, rating: number, type: DomainTypeEnum) {
+  constructor(domain: string, url: string, logo: string, rating: number, type: DomainTypeEnum) {
     this.domain = domain;
-    this.page = page;
+    this.url = url;
     this.logo = logo;
     this.rating = rating;
     this.type = type;

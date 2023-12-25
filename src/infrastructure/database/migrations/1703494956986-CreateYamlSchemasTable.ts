@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
-import { DomainTypeEnum } from '../../../domain/domains/enums/domain-type.enum';
 
-export class CreateTableWithDomains1703418249236 implements MigrationInterface {
+export class CreateYamlSchemasTable1703494956986 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'domains',
+        name: 'yaml_schemas',
         columns: [
           {
             name: 'id',
@@ -15,32 +14,54 @@ export class CreateTableWithDomains1703418249236 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'domain',
+            name: 'domain_name',
             type: 'varchar(255)',
             isNullable: false,
           },
           {
-            name: 'url',
-            type: 'varchar(2048)',
+            name: 'domain_id',
+            type: 'bigint',
             isNullable: false,
           },
           {
-            name: 'logo',
-            type: 'varchar(2048)',
+            name: 'title',
+            type: 'jsonb',
             isNullable: false,
           },
           {
-            name: 'rating',
-            type: 'int',
-            default: 0,
+            name: 'image',
+            type: 'jsonb',
             isNullable: false,
           },
           {
-            name: 'type',
-            type: 'enum',
-            enum: Object.values(DomainTypeEnum),
+            name: 'price',
+            type: 'jsonb',
             isNullable: false,
-            default: `'${DomainTypeEnum.WORLD}'`,
+          },
+          {
+            name: 'color',
+            type: 'jsonb',
+            isNullable: true,
+          },
+          {
+            name: 'currency',
+            type: 'jsonb',
+            isNullable: true,
+          },
+          {
+            name: 'default_currency',
+            type: 'varchar(36)',
+            isNullable: false,
+          },
+          {
+            name: 'size',
+            type: 'jsonb',
+            isNullable: true,
+          },
+          {
+            name: 'availability',
+            type: 'jsonb',
+            isNullable: false,
           },
           {
             name: 'created_at',
@@ -64,16 +85,25 @@ export class CreateTableWithDomains1703418249236 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'domains',
+      'yaml_schemas',
       new TableIndex({
-        name: 'users_domain_unique',
+        name: 'users_domain_name_unique',
         isUnique: true,
-        columnNames: ['domain'],
+        columnNames: ['domain_name'],
+      }),
+    );
+
+    await queryRunner.createIndex(
+      'yaml_schemas',
+      new TableIndex({
+        name: 'users_domain_id_unique',
+        isUnique: true,
+        columnNames: ['domain_id'],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('domains');
+    await queryRunner.dropTable('yaml_schemas');
   }
 }

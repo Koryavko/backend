@@ -1,6 +1,9 @@
 export class URLHelper {
   public static extractDomain(url: string): string {
     try {
+      if (!/^http(s)?:\/\//.test(url)) {
+        url = 'https://' + url;
+      }
       const urlObject = new URL(url);
 
       return urlObject.hostname.replace(/^www(\d)?\./, '');

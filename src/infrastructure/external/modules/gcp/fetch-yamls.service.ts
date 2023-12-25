@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { GoogleCloudService } from './google-cloud.service';
 import * as yaml from 'js-yaml';
-import { YamlSchemaEntity } from '../../../../domain/yaml-schemas/entities/yaml-schema.entity';
 import { DomainEntity } from '../../../../domain/domains/entities/domain.entity';
 import { DomainRepository } from '../../../database/repositories/domains/domain.repository';
 import { DomainTypeEnum } from '../../../../domain/domains/enums/domain-type.enum';
+import { YamlSchemaEntity } from '../../../../domain/yaml-schemas/entities/yaml-schema.entity';
 
 @Injectable()
 export class FetchYamlsService {
@@ -14,7 +14,7 @@ export class FetchYamlsService {
 
   private readonly batch = 100;
 
-  private readonly directory = 'yamls/';
+  private readonly directory = 'yaml-selectors/';
 
   constructor(
     private readonly googleCloudService: GoogleCloudService,
@@ -72,32 +72,43 @@ export class FetchYamlsService {
       return domainEntity;
     }
 
-    const page = raw?.MainPage ? <string>raw.MainPage : `https://${domainName}`;
+    const url = raw?.URL ? <string>raw.URL : `https://${domainName}`;
     const logo = raw?.Logo ? <string>raw.Logo : null;
     const type = raw?.Type ? <DomainTypeEnum>raw.Type : DomainTypeEnum.WORLD;
-    domainEntity = new DomainEntity(domainName, page, logo, 0, type);
+    domainEntity = new DomainEntity(domainName, url, logo, 0, type);
 
     return this.domainRepository.save(domainEntity);
   }
 
   private async mapRawDataToEntity(
     fileName: string,
-    raw: Record<string, Record<string, unknown>>,
+    raw: Record<string, Record<string, unknown> | string>,
   ): Promise<YamlSchemaEntity> {
-    if (!raw) {
+    if (!raw || !Object.entries(raw).length) {
       return;
     }
 
     const domainEntity = await this.getDomainEntity(fileName, raw);
+    const title = raw?.Title ? <Record<string, unknown>>raw.Title : null;
+    const price = raw?.Price ? <Record<string, unknown>>raw.Price : null;
+    const image = raw?.Image ? <Record<string, unknown>>raw.Image : null;
+    const currency = raw?.Currency ? <Record<string, unknown>>raw.Currency : null;
+    const availability = raw?.Availability ? <Record<string, unknown>>raw.Availability : null;
+    const size = raw?.Size ? <Record<string, unknown>>raw.Size : null;
+    const color = raw?.Color ? <Record<string, unknown>>raw.Color : null;
+    const defaultCurrency = raw?.DefaultCurrency ? <string>raw.DefaultCurrency : null;
 
-    const title = raw?.Title ? raw.Title : null;
-    const price = raw?.Price ? raw.Price : null;
-    const image = raw?.Image ? raw.Image : null;
-    const currency = raw?.Currency ? raw.Currency : null;
-    const availability = raw?.Availability ? raw.Availability : null;
-    const size = raw?.Size ? raw.Size : null;
-    const color = raw?.Color ? raw.Color : null;
-
-    return new YamlSchemaEntity(domainEntity, title, image, price, color, availability, size, currency);
+    return new YamlSchemaEntity(
+      domainEntity,
+      domainEntity.domain,
+      title,
+      image,
+      price,
+      color,
+      availability,
+      size,
+      currency,
+      defaultCurrency,
+    );
   }
 }

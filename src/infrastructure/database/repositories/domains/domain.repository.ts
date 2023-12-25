@@ -17,7 +17,7 @@ export class DomainRepository extends Repository<DomainEntity> {
   public async getPopularDomains(type: DomainTypeEnum): Promise<DomainEntity[]> {
     return this.find({
       where: {
-        type: type,
+        ...(type === DomainTypeEnum.WORLD && { type }),
       },
       order: {
         rating: 'DESC',

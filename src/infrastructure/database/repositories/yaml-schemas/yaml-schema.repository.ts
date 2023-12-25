@@ -14,6 +14,12 @@ export class YamlSchemaRepository extends Repository<YamlSchemaEntity> {
   }
 
   public async updateByDomainOrCreate(yamlSchemaEntity: YamlSchemaEntity): Promise<void> {
-    await this.upsert(yamlSchemaEntity, { conflictPaths: ['domain'], skipUpdateIfNoValuesChanged: true });
+    await this.upsert(yamlSchemaEntity, { conflictPaths: ['domainName'], skipUpdateIfNoValuesChanged: true });
+  }
+
+  public async findByDomain(domain: string): Promise<YamlSchemaEntity> {
+    return this.findOne({
+      where: { domainName: domain },
+    });
   }
 }
