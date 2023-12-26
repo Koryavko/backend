@@ -37,6 +37,10 @@ export class ProductPageFootprintDto {
       return `Invalid ${dto.domain} with ${dto.footprint} at line ${this.index}`;
     }
 
+    if (dto.footprint) {
+      return `Invalid ${dto.footprint} at line ${this.index}`;
+    }
+
     return null;
   }
 }

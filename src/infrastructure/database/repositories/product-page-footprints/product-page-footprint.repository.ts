@@ -21,7 +21,11 @@ export class ProductPageFootprintRepository extends Repository<ProductPageFootpr
     await this.insert(footprintEntity);
   }
 
-  public async deleteAllUnSynced(): Promise<void> {
-    await this.delete({ isSynced: false });
+  public async findByUnSynced(): Promise<ProductPageFootprintEntity[]> {
+    return this.findBy({ isSynced: false });
+  }
+
+  public async getCountByIsSynced(): Promise<number> {
+    return this.countBy({ isSynced: true });
   }
 }

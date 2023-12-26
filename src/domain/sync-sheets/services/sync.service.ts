@@ -3,30 +3,16 @@ import { GoogleSheetRepository } from '../../../infrastructure/database/reposito
 import { GoogleSheetEntity } from '../enities/google-sheet.entity';
 import { GoogleSheetService } from '../../../infrastructure/external/modules/google-sheets/services/google-sheet.service';
 import { URLHelper } from '../../utillity/helpers/url.helper';
-import { DomainRepository } from '../../../infrastructure/database/repositories/domains/domain.repository';
-import { ProductPageFootprintRepository } from '../../../infrastructure/database/repositories/product-page-footprints/product-page-footprint.repository';
-import { ProductPageFootprintDto } from '../../product-page-footprints/dto/product-page-footprint.dto';
-import { ProductPageFootprintEntity } from '../../product-page-footprints/entities/product-page-footprint.entity';
+import { ProcessStatusSyncEnum } from '../enums/process-status-sync.enum';
+import { ListNameEnum } from '../enums/list-name.enum';
+import { SyncProductPageFootprintsService } from './sync-product-page-footprints.service';
 
 @Injectable()
 export class SyncService {
-  private readonly example = [
-    ['Domain', 'Footprints'],
-    [
-      'amazon.de',
-      'http(s)?:\\/\\/(www\\.|\\/\\/)?amazon(\\.[a-z]{2,3}){1,2}\\/(.*\\/)?(dp|gp)(\\/product)?\\/\\w{10}(\\/?(\\?.*|\\/.*))?$',
-    ],
-    [
-      'www.amazon.de',
-      'http(s)?:\\/\\/(www\\.|\\/\\/)?amazon(\\.[a-z]{2,3}){1,2}\\/(.*\\/)?(dp|gp)(\\/product)?\\/\\w{10}(\\/?(\\?.*|\\/.*))?$',
-    ],
-  ];
-
   constructor(
     private readonly googleSheetRepository: GoogleSheetRepository,
     private readonly googleSheetService: GoogleSheetService,
-    private readonly domainRepository: DomainRepository,
-    private readonly productPageFootprintRepository: ProductPageFootprintRepository,
+    private readonly syncProductPageFootprintsService: SyncProductPageFootprintsService,
   ) {}
 
   private async getSheet(id: number): Promise<GoogleSheetEntity> {
@@ -35,49 +21,38 @@ export class SyncService {
       throw new Error('Sheet not found');
     }
 
-    // if(googleSheetEntity.status !== ProcessStatusSyncEnum.PROCESSING){
-    //   throw new Error('The sheet is not processing');
-    // }
+    if (googleSheetEntity.status !== ProcessStatusSyncEnum.PROCESSING) {
+      throw new Error('The sheet is not processing');
+    }
 
     return googleSheetEntity;
   }
 
-  private async saveProductPageFootprints(data: string[][]): Promise<void> {
-    await this.productPageFootprintRepository.setAllUnSynced();
-
-    for (let i = 0; i < data.length; i++) {
-      const [domain, footprint] = data[i];
-      if (!footprint) {
-        continue;
-      }
-
-      const productPageFootprintDto = new ProductPageFootprintDto(domain, footprint, i);
-      const validationResponse = await productPageFootprintDto.validate();
-      if (validationResponse.error) {
-        continue;
-      }
-
-      let domainEntity;
-      try {
-        if (domain) {
-          domainEntity = await this.domainRepository.findOneByDomain(domain);
-        }
-
-        const productPageFootprintEntity = new ProductPageFootprintEntity(domain, domainEntity, footprint, true);
-        await this.productPageFootprintRepository.createProductPageFootprint(productPageFootprintEntity);
-      } catch (e) {}
-
-      await this.productPageFootprintRepository.deleteAllUnSynced();
+  private async syncListName(name: ListNameEnum, data: string[][]): Promise<number> {
+    switch (true) {
+      case name === ListNameEnum.PRODUCT_PAGE_FOOTPRINTS:
+        return this.syncProductPageFootprintsService.sync(data);
+      default:
+        return 0;
     }
+  }
+
+  private async prepareData(link: string): Promise<string[][]> {
+    const data = await this.googleSheetService.execute(link);
+
+    return data
+      .slice(1)
+      .map((row) => [URLHelper.extractDomain(row[0].trim()), row[1].trim()])
+      .filter(Boolean);
   }
 
   public async sync(id: number): Promise<void> {
     const sheetEntity = await this.getSheet(id);
-    // const data = await this.googleSheetService.execute(sheetEntity.link);
-    let data = this.example;
-    data = data
-      .slice(1)
-      .map((row) => [URLHelper.extractDomain(row[0].trim()), row[1].trim()])
-      .filter(Boolean);
+    const data = await this.prepareData(sheetEntity.link);
+
+    sheetEntity.count = await this.syncListName(sheetEntity.name, data);
+    sheetEntity.status = ProcessStatusSyncEnum.DONE;
+
+    await this.googleSheetRepository.save(sheetEntity);
   }
 }
