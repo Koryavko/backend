@@ -96,6 +96,7 @@ export class FetchYamlsService {
     const availability = raw?.Availability ? <Record<string, unknown>>raw.Availability : null;
     const size = raw?.Size ? <Record<string, unknown>>raw.Size : null;
     const color = raw?.Color ? <Record<string, unknown>>raw.Color : null;
+    const ean = raw?.Ean ? <Record<string, unknown>>raw.Ean : null;
     const defaultCurrency = raw?.DefaultCurrency ? <string>raw.DefaultCurrency : null;
 
     return new YamlSchemaEntity(
@@ -107,6 +108,7 @@ export class FetchYamlsService {
       color,
       availability,
       size,
+      ean,
       currency,
       defaultCurrency,
     );

@@ -64,6 +64,11 @@ export class CreateYamlSchemasTable1703494956986 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'ean',
+            type: 'jsonb',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp with time zone',
             default: 'now()',

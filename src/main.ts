@@ -65,6 +65,7 @@ async function bootstrap(): Promise<void> {
       .addTag('users')
       .addTag('domains')
       .addTag('sync')
+      .addTag('products')
       .addApiKey({ type: 'apiKey', name: 'user-uuid', in: 'header' }, 'user-uuid')
       .addServer(`${url.origin}`)
       .build();

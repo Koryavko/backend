@@ -21,6 +21,8 @@ export class YamlSchemaEntity {
 
   public size: Record<string, unknown>;
 
+  public ean: Record<string, unknown>;
+
   public defaultCurrency: string;
 
   public createdAt: Date;
@@ -38,6 +40,7 @@ export class YamlSchemaEntity {
     color: Record<string, unknown>,
     availability: Record<string, unknown>,
     size: Record<string, unknown>,
+    ean: Record<string, unknown>,
     currency: Record<string, unknown>,
     defaultCurrency: string,
   ) {
@@ -49,6 +52,7 @@ export class YamlSchemaEntity {
     this.color = color;
     this.availability = availability;
     this.size = size;
+    this.ean = ean;
     this.currency = currency;
     this.defaultCurrency = defaultCurrency;
     this.createdAt = new Date();

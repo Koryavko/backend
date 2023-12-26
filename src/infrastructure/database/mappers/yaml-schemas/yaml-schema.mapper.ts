@@ -37,6 +37,10 @@ export const YamlSchemaMapper = new EntitySchema<YamlSchemaEntity>({
       type: 'jsonb',
       nullable: true,
     },
+    ean: {
+      type: 'jsonb',
+      nullable: true,
+    },
     size: {
       type: 'jsonb',
       nullable: true,

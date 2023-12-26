@@ -12,6 +12,7 @@ import { YamlModule } from './infrastructure/ioc/yaml.module';
 import { SyncSheetModule } from './infrastructure/ioc/sync-sheet.module';
 import { BullModule } from '@nestjs/bull';
 import { BullConfig } from './infrastructure/configs/bull';
+import { ProductModule } from './infrastructure/ioc/product.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { BullConfig } from './infrastructure/configs/bull';
     DomainModule,
     YamlModule,
     SyncSheetModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [],
