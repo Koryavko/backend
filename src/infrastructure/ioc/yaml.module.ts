@@ -22,5 +22,6 @@ import { YamlSchemaService } from '../../domain/yaml-schemas/services/yaml-schem
     GetProductParseRulesAction,
     YamlSchemaService,
   ],
+  exports: [YamlSchemaRepository],
 })
 export class YamlModule {}

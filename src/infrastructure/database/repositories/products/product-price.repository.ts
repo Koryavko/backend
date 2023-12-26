@@ -12,4 +12,8 @@ export class ProductPriceRepository extends Repository<ProductPriceEntity> {
   ) {
     super(repository.target, repository.manager, repository.queryRunner);
   }
+
+  public async findByProductId(productId: number): Promise<ProductPriceEntity[]> {
+    return this.find({ where: { product: { id: productId } } });
+  }
 }

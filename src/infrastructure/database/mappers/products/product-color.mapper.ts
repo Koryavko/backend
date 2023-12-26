@@ -13,6 +13,12 @@ export const ProductColorMapper = new EntitySchema<ProductColorEntity>({
       type: String,
       nullable: false,
     },
+    available: {
+      name: 'available',
+      type: Boolean,
+      default: true,
+      nullable: false,
+    },
   },
   orderBy: {
     id: 'ASC',

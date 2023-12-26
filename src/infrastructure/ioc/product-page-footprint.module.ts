@@ -11,6 +11,6 @@ import { ProductPageFootprintService } from '../../domain/product-page-footprint
   imports: [TypeOrmModule.forFeature([ProductPageFootprintMapper]), UserModule],
   controllers: [ProductPageFootprintController],
   providers: [ProductPageFootprintRepository, GetProductPageFootprintAction, ProductPageFootprintService],
-  exports: [ProductPageFootprintRepository],
+  exports: [ProductPageFootprintRepository, ProductPageFootprintService],
 })
 export class ProductPageFootprintModule {}

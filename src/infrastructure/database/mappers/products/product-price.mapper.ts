@@ -13,6 +13,12 @@ export const ProductPriceMapper = new EntitySchema<ProductPriceEntity>({
       type: Number,
       nullable: false,
     },
+    available: {
+      name: 'available',
+      type: Boolean,
+      default: true,
+      nullable: false,
+    },
   },
   orderBy: {
     id: 'ASC',

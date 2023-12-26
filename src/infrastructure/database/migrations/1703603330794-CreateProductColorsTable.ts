@@ -24,6 +24,12 @@ export class CreateProductColorsTable1703603330794 implements MigrationInterface
             isNullable: false,
           },
           {
+            name: 'availability',
+            type: 'boolean',
+            default: true,
+            isNullable: false,
+          },
+          {
             name: 'created_at',
             type: 'timestamp with time zone',
             default: 'now()',

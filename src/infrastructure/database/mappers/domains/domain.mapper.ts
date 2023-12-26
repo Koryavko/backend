@@ -58,5 +58,12 @@ export const DomainMapper = new EntitySchema<DomainEntity>({
       target: 'ProductPageFootprintEntity',
       inverseSide: 'domain',
     },
+    domainImportantQueryParams: {
+      type: 'one-to-many',
+      onDelete: 'CASCADE',
+      cascade: true,
+      target: 'DomainImportantQueryParamsEntity',
+      inverseSide: 'domain',
+    },
   },
 });

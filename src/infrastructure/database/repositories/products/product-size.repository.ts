@@ -12,4 +12,8 @@ export class ProductSizeRepository extends Repository<ProductSizeEntity> {
   ) {
     super(repository.target, repository.manager, repository.queryRunner);
   }
+
+  public async findByProductId(productId: number): Promise<ProductSizeEntity[]> {
+    return this.find({ where: { product: { id: productId } } });
+  }
 }

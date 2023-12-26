@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
 
-export class CreateProductSizesTable1703603323919 implements MigrationInterface {
+export class CreateDomainImportantQueryParamsTable1703621170272 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'product_sizes',
+        name: 'domain_important_query_params',
         columns: [
           {
             name: 'id',
@@ -14,17 +14,22 @@ export class CreateProductSizesTable1703603323919 implements MigrationInterface 
             generationStrategy: 'increment',
           },
           {
-            name: 'size',
+            name: 'domain_name',
             type: 'varchar(255)',
             isNullable: false,
           },
           {
-            name: 'product_id',
+            name: 'domain_id',
             type: 'bigint',
             isNullable: false,
           },
           {
-            name: 'availability',
+            name: 'params',
+            type: 'varchar(1028)',
+            isNullable: false,
+          },
+          {
+            name: 'is_synced',
             type: 'boolean',
             default: true,
             isNullable: false,
@@ -51,24 +56,32 @@ export class CreateProductSizesTable1703603323919 implements MigrationInterface 
     );
 
     await queryRunner.createForeignKey(
-      'product_sizes',
+      'domain_important_query_params',
       new TableForeignKey({
-        columnNames: ['product_id'],
+        columnNames: ['domain_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'products',
+        referencedTableName: 'domains',
       }),
     );
 
     await queryRunner.createIndex(
-      'product_sizes',
+      'domain_important_query_params',
       new TableIndex({
-        name: 'product_sizes_product_id',
-        columnNames: ['product_id'],
+        name: 'domain_important_query_params_domain_id_index',
+        columnNames: ['domain_id'],
+      }),
+    );
+
+    await queryRunner.createIndex(
+      'domain_important_query_params',
+      new TableIndex({
+        name: 'domain_important_query_params_domain_name_index',
+        columnNames: ['domain_name'],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('product_sizes');
+    await queryRunner.dropTable('domain_important_query_params');
   }
 }

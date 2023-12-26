@@ -12,4 +12,8 @@ export class ProductColorRepository extends Repository<ProductColorEntity> {
   ) {
     super(repository.target, repository.manager, repository.queryRunner);
   }
+
+  public async findByProductId(productId: number): Promise<ProductColorEntity[]> {
+    return this.find({ where: { product: { id: productId } } });
+  }
 }

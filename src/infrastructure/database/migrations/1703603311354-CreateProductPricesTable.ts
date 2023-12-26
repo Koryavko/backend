@@ -24,6 +24,12 @@ export class CreateProductPricesTable1703603311354 implements MigrationInterface
             isNullable: false,
           },
           {
+            name: 'availability',
+            type: 'boolean',
+            default: true,
+            isNullable: false,
+          },
+          {
             name: 'created_at',
             type: 'timestamp with time zone',
             default: 'now()',
