@@ -29,7 +29,7 @@ export class SyncSheetAction {
       throw new ConflictException('The process is already running');
     }
 
-    // await this.googleSheetRepository.setStatus(googleSheetEntity.id, ProcessStatusSyncEnum.PROCESSING);
+    await this.googleSheetRepository.setStatus(googleSheetEntity.id, ProcessStatusSyncEnum.PROCESSING);
     await this.syncQueue.add(
       { id: googleSheetEntity.id },
       { attempts: 1, backoff: 0, removeOnComplete: true, removeOnFail: true },

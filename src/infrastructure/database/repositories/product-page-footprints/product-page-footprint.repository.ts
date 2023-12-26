@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductPageFootprintEntity } from '../../../../domain/product-page-footprints/entities/product-page-footprint.entity';
 import { ProductPageFootprintMapper } from '../../mappers/product-page-footprints/product-page-footprint.mapper';
@@ -27,5 +27,13 @@ export class ProductPageFootprintRepository extends Repository<ProductPageFootpr
 
   public async getCountByIsSynced(): Promise<number> {
     return this.countBy({ isSynced: true });
+  }
+
+  public async findByDomain(domain: string): Promise<ProductPageFootprintEntity[]> {
+    return this.findBy({ domainName: domain });
+  }
+
+  public async findUniqueFootprints(): Promise<ProductPageFootprintEntity[]> {
+    return this.findBy({ domainName: IsNull() });
   }
 }

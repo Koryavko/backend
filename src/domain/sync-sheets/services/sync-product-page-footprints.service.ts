@@ -6,7 +6,10 @@ import { ProductPageFootprintEntity } from '../../product-page-footprints/entiti
 import { DomainRepository } from '../../../infrastructure/database/repositories/domains/domain.repository';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { PRODUCT_PAGE_FOOTPRINT } from '../../../infrastructure/constants/redis.constant';
+import {
+  PRODUCT_PAGE_FOOTPRINT_DOMAIN,
+  PRODUCT_PAGE_FOOTPRINT_UNIQUE,
+} from '../../../infrastructure/constants/redis.constant';
 
 @Injectable()
 export class SyncProductPageFootprintsService implements SyncSheetInterface {
@@ -23,7 +26,7 @@ export class SyncProductPageFootprintsService implements SyncSheetInterface {
 
     for (const productPageFootprintEntity of unSynced) {
       await Promise.all([
-        this.cacheService.del(PRODUCT_PAGE_FOOTPRINT + productPageFootprintEntity.domainName),
+        this.cacheService.del(PRODUCT_PAGE_FOOTPRINT_DOMAIN + productPageFootprintEntity.domainName),
         this.productPageFootprintRepository.remove(productPageFootprintEntity),
       ]);
     }
@@ -49,6 +52,7 @@ export class SyncProductPageFootprintsService implements SyncSheetInterface {
         }
 
         const productPageFootprintEntity = new ProductPageFootprintEntity(domain, domainEntity, footprint, true);
+        console.log(productPageFootprintEntity, 'productPageFootprintEntity');
         await this.productPageFootprintRepository.createProductPageFootprint(productPageFootprintEntity);
       } catch (e) {
         this.logger.error(`Error while saving product page footprint: ${e.message}`, e.stack);
@@ -63,6 +67,7 @@ export class SyncProductPageFootprintsService implements SyncSheetInterface {
     const [countByIsSynced] = await Promise.all([
       this.productPageFootprintRepository.getCountByIsSynced(),
       this.deleteAllUnSynced(),
+      this.cacheService.del(PRODUCT_PAGE_FOOTPRINT_UNIQUE),
     ]);
 
     return countByIsSynced;

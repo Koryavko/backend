@@ -42,7 +42,13 @@ export class SyncService {
 
     return data
       .slice(1)
-      .map((row) => [URLHelper.extractDomain(row[0].trim()), row[1].trim()])
+      .map((row) => {
+        if (!row[0]) {
+          return [null, row[1]];
+        }
+
+        return [URLHelper.extractDomain(row[0]?.trim()), row[1].trim()];
+      })
       .filter(Boolean);
   }
 

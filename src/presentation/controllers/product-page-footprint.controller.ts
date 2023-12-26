@@ -10,9 +10,9 @@ import {
 import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
 import { AuthErrorResponse, TooManyRequestsResponse, UnprocessableErrorResponse } from '../responses/response';
 import { ApiTooManyRequestsResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
-import { GetProductParseRulesResponse } from '../responses/yaml-schemas/get-product-parse-rules.response';
 import { DomainInQueryRequest } from '../requests/yaml-schemas/domain-in-query.request';
-import { GetProductParseRulesAction } from '../../application/yaml-schemas/get-product-parse-rules.action';
+import { FootprintsResponse } from '../responses/product-page-footprints/footprints.response';
+import { GetProductPageFootprintAction } from '../../application/product-page-footprints/get-product-page-footprint.action';
 
 @Controller('domains')
 @ApiBearerAuth()
@@ -20,14 +20,14 @@ import { GetProductParseRulesAction } from '../../application/yaml-schemas/get-p
 @UseGuards(UserGuard)
 @ApiUnauthorizedResponse({ type: AuthErrorResponse, description: 'Unauthorized error' })
 @ApiTooManyRequestsResponse({ type: TooManyRequestsResponse, description: 'Too many requests' })
-export class YamlSchemasController {
-  constructor(private readonly getProductParseRulesAction: GetProductParseRulesAction) {}
+export class ProductPageFootprintController {
+  constructor(private readonly getProductPageFootprintAction: GetProductPageFootprintAction) {}
 
-  @Get('product-parse-rules')
-  @ApiOperation({ summary: `Getting a list of yaml schemas` })
-  @ApiOkResponse({ description: 'Successfully obtained the list of yaml schemas', type: GetProductParseRulesResponse })
+  @Get('product-page-footprints')
+  @ApiOperation({ summary: `Obtaining a list of footprints to define product pages` })
+  @ApiOkResponse({ description: 'Successfully obtained the list of footprints', type: FootprintsResponse })
   @ApiUnprocessableEntityResponse({ type: UnprocessableErrorResponse, description: 'Validation error' })
-  public async getYamlSchemas(@Query() query: DomainInQueryRequest): Promise<GetProductParseRulesResponse> {
-    return this.getProductParseRulesAction.execute(query.domain);
+  public async getProductPageFootprints(@Query() query: DomainInQueryRequest): Promise<FootprintsResponse> {
+    return this.getProductPageFootprintAction.execute(query.domain);
   }
 }

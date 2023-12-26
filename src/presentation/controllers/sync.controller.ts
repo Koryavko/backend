@@ -7,6 +7,7 @@ import {
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
+  ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
 import {
@@ -14,6 +15,7 @@ import {
   ConflictErrorResponse,
   NotFoundResponse,
   TooManyRequestsResponse,
+  UnprocessableErrorResponse,
 } from '../responses/response';
 import { ApiTooManyRequestsResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { SyncRequest } from '../requests/sync/sync.request';
@@ -33,6 +35,7 @@ export class SyncController {
   @ApiNoContentResponse({ description: 'Table synchronization is running' })
   @ApiNotFoundResponse({ description: 'List not found', type: NotFoundResponse })
   @ApiConflictResponse({ description: 'Table during synchronisation', type: ConflictErrorResponse })
+  @ApiUnprocessableEntityResponse({ type: UnprocessableErrorResponse, description: 'Validation error' })
   public async sync(@Param() params: SyncRequest): Promise<void> {
     return this.syncSheetAction.execute(params.list);
   }
