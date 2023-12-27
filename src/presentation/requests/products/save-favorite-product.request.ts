@@ -12,6 +12,7 @@ import {
   IsOptional,
   IsString,
   IsUrl,
+  Min,
   MinLength,
   ValidateIf,
 } from 'class-validator';
@@ -157,4 +158,18 @@ export class SaveFavoriteProductRequest {
   })
   @MinLength(1)
   public notifyColor: string;
+
+  @ValidateIf((o) => o.feature === NotificationFeatureEnum.PRICE)
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }: { value: string }) => value && Number(value))
+  @ApiProperty({
+    example: 10,
+    type: Number,
+    required: true,
+    nullable: false,
+    description: 'Price percentage threshold. Feature = price',
+  })
+  @Min(1)
+  public notifyPrice: number;
 }

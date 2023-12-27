@@ -16,10 +16,19 @@ import { ProductUrlService } from '../../domain/products/services/product-url.se
 import { ProductService } from '../../domain/products/services/product.service';
 import { DomainModule } from './domain.module';
 import { YamlModule } from './yaml.module';
+import { ProductFavoriteMapper } from '../database/mappers/products/product-favorite.mapper';
+import { ProductFavoriteRepository } from '../database/repositories/products/product-favorite.repository';
+import { ProductFavoriteService } from '../../domain/products/services/product-favorite.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ProductMapper, ProductPriceMapper, ProductSizeMapper, ProductColorMapper]),
+    TypeOrmModule.forFeature([
+      ProductMapper,
+      ProductPriceMapper,
+      ProductSizeMapper,
+      ProductColorMapper,
+      ProductFavoriteMapper,
+    ]),
     UserModule,
     ProductPageFootprintModule,
     DomainModule,
@@ -34,6 +43,8 @@ import { YamlModule } from './yaml.module';
     SaveProductFavoriteAction,
     ProductUrlService,
     ProductService,
+    ProductFavoriteRepository,
+    ProductFavoriteService,
   ],
 })
 export class ProductModule {}

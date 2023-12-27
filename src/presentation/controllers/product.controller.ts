@@ -42,6 +42,6 @@ export class ProductController {
   @ApiConflictResponse({ description: 'The product has already been added for tracking', type: ConflictErrorResponse })
   @ApiBadRequestResponse({ description: 'Error while saving product', type: ErrorResponse })
   public async saveFavorite(@Body() body: SaveFavoriteProductRequest, @Req() request: UserRequest): Promise<void> {
-    return this.saveProductFavoriteAction.execute(body, request.user.currentLocale);
+    return this.saveProductFavoriteAction.execute(body, request.user);
   }
 }

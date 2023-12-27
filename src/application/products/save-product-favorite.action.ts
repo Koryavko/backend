@@ -5,6 +5,8 @@ import { URLHelper } from '../../domain/utillity/helpers/url.helper';
 import { ProductService } from '../../domain/products/services/product.service';
 import { ProductRepository } from '../../infrastructure/database/repositories/products/product.repository';
 import { ProductEntity } from '../../domain/products/entities/product.entity';
+import { ProductFavoriteService } from '../../domain/products/services/product-favorite.service';
+import { UserEntity } from '../../domain/users/entities/user.entity';
 
 @Injectable()
 export class SaveProductFavoriteAction {
@@ -14,9 +16,10 @@ export class SaveProductFavoriteAction {
     private readonly productUrlService: ProductUrlService,
     private readonly productService: ProductService,
     private readonly productRepository: ProductRepository,
+    private readonly productFavoriteService: ProductFavoriteService,
   ) {}
 
-  public async execute(body: SaveFavoriteProductRequest, locale: string): Promise<void> {
+  public async execute(body: SaveFavoriteProductRequest, user: UserEntity): Promise<void> {
     const isValidProductUrl = await this.productService.validateProductUrl(body.url).catch((e) => {
       this.logger.error(`Error while validating product url: ${e.message}`, e.stack);
 
@@ -40,9 +43,11 @@ export class SaveProductFavoriteAction {
       product = await this.productService.createProduct(body);
     }
 
-    // TODO Save to favorite table
     try {
-      await this.productRepository.save(product);
+      await Promise.all([
+        this.productRepository.save(product),
+        this.productFavoriteService.saveFavorites(product, user, body),
+      ]);
     } catch (e) {
       this.logger.error(`Error while saving product: ${e.message}`, e.stack);
 
