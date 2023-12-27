@@ -4,6 +4,7 @@ import { ProductUrlService } from '../../domain/products/services/product-url.se
 import { URLHelper } from '../../domain/utillity/helpers/url.helper';
 import { ProductService } from '../../domain/products/services/product.service';
 import { ProductRepository } from '../../infrastructure/database/repositories/products/product.repository';
+import { ProductEntity } from '../../domain/products/entities/product.entity';
 
 @Injectable()
 export class SaveProductFavoriteAction {
@@ -27,14 +28,11 @@ export class SaveProductFavoriteAction {
 
     body.url = await this.productUrlService.transformUrl(body.url);
     const urls = URLHelper.getUrlWWW(body.url);
-    // eslint-disable-next-line prefer-const
-    let [product, currency] = await Promise.all([
+    let product: ProductEntity;
+    [product, body.currency] = await Promise.all([
       this.productRepository.findByUrls(urls),
-      !body.currency && this.productService.getDefaultCurrency(body.url),
+      body.currency || this.productService.getDefaultCurrency(body.url),
     ]);
-    if (currency) {
-      body.currency = currency;
-    }
 
     if (product) {
       product = await this.productService.updateProduct(product, body);
