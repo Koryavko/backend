@@ -24,9 +24,8 @@ export class CreateProductPricesTable1703603311354 implements MigrationInterface
             isNullable: false,
           },
           {
-            name: 'availability',
-            type: 'boolean',
-            default: true,
+            name: 'currency',
+            type: 'varchar(36)',
             isNullable: false,
           },
           {

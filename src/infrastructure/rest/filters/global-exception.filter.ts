@@ -29,7 +29,6 @@ export class GlobalExceptionFilter implements ExceptionFilter<Error> {
 
     if (statusCode !== HttpStatus.UNPROCESSABLE_ENTITY) {
       return response.status(statusCode).json({
-        service: 'api',
         code: statusCode,
         message: exception.message,
         timestamp: new Date().toISOString(),
@@ -41,7 +40,6 @@ export class GlobalExceptionFilter implements ExceptionFilter<Error> {
     const exceptionResponse: any = exception.getResponse();
 
     return response.status(statusCode).json({
-      service: 'api',
       code: statusCode,
       message: exceptionResponse.message,
       timestamp: new Date().toISOString(),
@@ -56,7 +54,6 @@ export class GlobalExceptionFilter implements ExceptionFilter<Error> {
     const statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
 
     return response.status(statusCode).json({
-      service: 'api',
       message: exception,
       code: statusCode,
       timestamp: new Date().toISOString(),

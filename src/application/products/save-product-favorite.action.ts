@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger } from '@nestjs/common';
 import { SaveFavoriteProductRequest } from '../../presentation/requests/products/save-favorite-product.request';
 import { ProductUrlService } from '../../domain/products/services/product-url.service';
 import { URLHelper } from '../../domain/utillity/helpers/url.helper';
@@ -25,20 +25,30 @@ export class SaveProductFavoriteAction {
       throw new ConflictException('Invalid product url');
     }
 
-    const url = await this.productUrlService.transformUrl(body.url);
-    const urls = URLHelper.getUrlWWW(url);
-    let product = await this.productRepository.findByUrls(urls);
+    body.url = await this.productUrlService.transformUrl(body.url);
+    const urls = URLHelper.getUrlWWW(body.url);
+    // eslint-disable-next-line prefer-const
+    let [product, currency] = await Promise.all([
+      this.productRepository.findByUrls(urls),
+      !body.currency && this.productService.getDefaultCurrency(body.url),
+    ]);
+    if (currency) {
+      body.currency = currency;
+    }
+
     if (product) {
       product = await this.productService.updateProduct(product, body);
     } else {
       product = await this.productService.createProduct(body);
     }
 
-    if (!product.currency) {
-      product.currency = await this.productService.getDefaultCurrency(body.url);
-    }
-
     // TODO Save to favorite table
-    await this.productRepository.save(product);
+    try {
+      await this.productRepository.save(product);
+    } catch (e) {
+      this.logger.error(`Error while saving product: ${e.message}`, e.stack);
+
+      throw new BadRequestException('Error while saving product');
+    }
   }
 }

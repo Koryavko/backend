@@ -24,11 +24,6 @@ export class CreateProductsTable1703603276001 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'currency',
-            type: 'varchar(36)',
-            isNullable: true,
-          },
-          {
             name: 'availability',
             type: 'boolean',
             default: false,

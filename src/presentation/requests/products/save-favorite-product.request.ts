@@ -12,7 +12,6 @@ import {
   IsOptional,
   IsString,
   IsUrl,
-  Min,
   MinLength,
   ValidateIf,
 } from 'class-validator';
@@ -98,11 +97,10 @@ export class SaveFavoriteProductRequest {
   public ean: string = null;
 
   @IsOptional()
-  @Transform(({ value }) => Number(value))
+  @Transform(({ value }) => value && Number(value))
   @IsInt()
-  @Min(1)
   @ApiProperty({ example: 142, type: Number, required: false, nullable: true })
-  public prices: number = null;
+  public price = 0;
 
   @IsOptional()
   @IsArray()
@@ -110,7 +108,7 @@ export class SaveFavoriteProductRequest {
   @ArrayNotEmpty()
   @ArrayMinSize(1)
   @ApiProperty({ example: ColorRequest, type: ColorRequest, required: false, nullable: true, isArray: true })
-  public colors: string = null;
+  public colors: ColorRequest[] = [];
 
   @IsOptional()
   @IsArray()
@@ -118,7 +116,7 @@ export class SaveFavoriteProductRequest {
   @ArrayNotEmpty()
   @ArrayMinSize(1)
   @ApiProperty({ example: SizeRequest, type: SizeRequest, required: false, nullable: true, isArray: true })
-  public sizes: string = null;
+  public sizes: SizeRequest[] = [];
 
   @IsEnum(NotificationFeatureEnum)
   @IsNotEmpty()

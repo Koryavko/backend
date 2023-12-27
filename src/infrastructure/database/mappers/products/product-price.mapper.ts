@@ -13,10 +13,9 @@ export const ProductPriceMapper = new EntitySchema<ProductPriceEntity>({
       type: Number,
       nullable: false,
     },
-    available: {
-      name: 'available',
-      type: Boolean,
-      default: true,
+    currency: {
+      name: 'currency',
+      type: String,
       nullable: false,
     },
   },

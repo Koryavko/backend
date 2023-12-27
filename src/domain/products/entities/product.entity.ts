@@ -11,8 +11,6 @@ export class ProductEntity {
 
   public prices: ProductPriceEntity[];
 
-  public currency: string;
-
   public availability: boolean;
 
   public colors: ProductColorEntity[];
@@ -31,7 +29,6 @@ export class ProductEntity {
     title: string,
     url: string,
     prices: ProductPriceEntity[],
-    currency: string,
     availability: boolean,
     colors: ProductColorEntity[],
     sizes: ProductSizeEntity[],
@@ -41,7 +38,6 @@ export class ProductEntity {
     this.title = title;
     this.url = url;
     this.prices = prices;
-    this.currency = currency;
     this.availability = availability;
     this.colors = colors;
     this.sizes = sizes;

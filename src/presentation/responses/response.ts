@@ -12,7 +12,7 @@ class MessageArrayType {
   public constraints: Record<string, string>;
 }
 
-class ErrorResponse {
+export class ErrorResponse {
   @ApiProperty({ example: HttpStatus.BAD_REQUEST })
   public code: number;
 

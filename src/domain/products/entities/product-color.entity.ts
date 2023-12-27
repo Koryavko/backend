@@ -7,16 +7,16 @@ export class ProductColorEntity {
 
   public product: ProductEntity;
 
-  public available: boolean;
+  public availability: boolean;
 
   public createdAt: Date;
 
   public updatedAt: Date;
 
-  constructor(color: string, product: ProductEntity, available: boolean) {
+  constructor(color: string, availability: boolean, product?: ProductEntity) {
     this.color = color;
     this.product = product;
-    this.available = available;
+    this.availability = availability;
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }

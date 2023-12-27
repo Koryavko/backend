@@ -39,17 +39,21 @@ export class ProductService {
     return false;
   }
 
-  private updateProductPrice(
-    productPrices: ProductPriceEntity[],
-    body: SaveFavoriteProductRequest,
-  ): ProductPriceEntity[] {
-    const prices = [];
-
-    return prices;
-  }
-
   private updateProductSize(productSizes: ProductSizeEntity[], body: SaveFavoriteProductRequest): ProductSizeEntity[] {
     const sizes = [];
+
+    for (const productSize of productSizes) {
+      const find = body.sizes.find((item) => item.size.toLowerCase() === productSize.size.toLowerCase());
+      productSize.availability = find ? find.availability : false;
+      sizes.push(productSize);
+    }
+
+    for (const size of body.sizes) {
+      const find = productSizes.find((item) => item.size.toLowerCase() === size.size.toLowerCase());
+      if (!find) {
+        sizes.push(new ProductSizeEntity(size.size, size.availability));
+      }
+    }
 
     return sizes;
   }
@@ -60,14 +64,40 @@ export class ProductService {
   ): ProductColorEntity[] {
     const colors = [];
 
+    for (const productColor of productColors) {
+      const find = body.colors.find((item) => item.color.toLowerCase() === productColor.color.toLowerCase());
+      productColor.availability = find ? find.availability : false;
+      colors.push(productColor);
+    }
+
+    for (const color of body.colors) {
+      const find = productColors.find((item) => item.color.toLowerCase() === color.color.toLowerCase());
+      if (!find) {
+        colors.push(new ProductColorEntity(color.color, color.availability));
+      }
+    }
+
     return colors;
+  }
+
+  private updateProductPrice(
+    productSizes: ProductPriceEntity[],
+    body: SaveFavoriteProductRequest,
+  ): ProductPriceEntity[] {
+    const lastPrice = productSizes.length ? productSizes[productSizes.length - 1] : null;
+    const checkPrice = Number(lastPrice.price) !== Number(body.price ?? 0);
+    const checkCurrency = lastPrice.currency.toLowerCase() !== body.currency.toLowerCase();
+    if (!lastPrice || checkPrice || checkCurrency) {
+      productSizes.push(new ProductPriceEntity(body.price, body.currency));
+    }
+
+    return productSizes;
   }
 
   public async updateProduct(product: ProductEntity, body: SaveFavoriteProductRequest): Promise<ProductEntity> {
     product.ean = body.ean ?? product.ean;
     product.title = body.title ?? product.title;
     product.image = body.image ?? product.image;
-    product.currency = body.currency ?? product.currency;
     product.url = body.url ?? product.url;
     product.availability = body.availability ?? product.availability;
     product.image = body.image ?? product.image;
@@ -86,9 +116,11 @@ export class ProductService {
   }
 
   public async createProduct(body: SaveFavoriteProductRequest): Promise<ProductEntity> {
-    // TODO: Implement adding price, color and size in cases if passed
+    const prices = new ProductPriceEntity(body.price, body.currency);
+    const sizes = body.sizes.map((item) => new ProductSizeEntity(item.size, item.availability));
+    const colors = body.colors.map((item) => new ProductColorEntity(item.color, item.availability));
 
-    return new ProductEntity(body.title, body.url, [], body.currency, body.availability, [], [], body.image, body.ean);
+    return new ProductEntity(body.title, body.url, [prices], body.availability, colors, sizes, body.image, body.ean);
   }
 
   public async getDefaultCurrency(url: string): Promise<string> {

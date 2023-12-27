@@ -13,8 +13,8 @@ export const ProductColorMapper = new EntitySchema<ProductColorEntity>({
       type: String,
       nullable: false,
     },
-    available: {
-      name: 'available',
+    availability: {
+      name: 'availability',
       type: Boolean,
       default: true,
       nullable: false,

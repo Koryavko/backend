@@ -7,16 +7,16 @@ export class ProductPriceEntity {
 
   public product: ProductEntity;
 
-  public available: boolean;
+  public currency: string;
 
   public createdAt: Date;
 
   public updatedAt: Date;
 
-  constructor(price: number, product: ProductEntity, available: boolean) {
-    this.price = price;
+  constructor(price: number, currency: string, product?: ProductEntity) {
+    this.price = price ?? 0;
     this.product = product;
-    this.available = available;
+    this.currency = currency;
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }

@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class ProductPageFootprintService {
-  private readonly ttl = 1209600; // 2 weeks
+  private readonly ttl = 1000 * 60 * 60 * (24 * 14); // 2 weeks
 
   constructor(
     private readonly productPageFootprintRepository: ProductPageFootprintRepository,

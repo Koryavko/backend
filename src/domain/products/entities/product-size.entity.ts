@@ -7,16 +7,16 @@ export class ProductSizeEntity {
 
   public product: ProductEntity;
 
-  public available: boolean;
+  public availability: boolean;
 
   public createdAt: Date;
 
   public updatedAt: Date;
 
-  constructor(size: string, product: ProductEntity, available: boolean) {
+  constructor(size: string, availability: boolean, product?: ProductEntity) {
     this.size = size;
     this.product = product;
-    this.available = available;
+    this.availability = availability;
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }

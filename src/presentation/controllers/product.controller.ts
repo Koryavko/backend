@@ -1,5 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiConflictResponse,
@@ -13,6 +14,7 @@ import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
 import {
   AuthErrorResponse,
   ConflictErrorResponse,
+  ErrorResponse,
   NotFoundResponse,
   TooManyRequestsResponse,
   UnprocessableErrorResponse,
@@ -38,6 +40,7 @@ export class ProductController {
   @ApiUnprocessableEntityResponse({ type: UnprocessableErrorResponse, description: 'Validation error' })
   @ApiNotFoundResponse({ description: 'Product page not found', type: NotFoundResponse })
   @ApiConflictResponse({ description: 'The product has already been added for tracking', type: ConflictErrorResponse })
+  @ApiBadRequestResponse({ description: 'Error while saving product', type: ErrorResponse })
   public async saveFavorite(@Body() body: SaveFavoriteProductRequest, @Req() request: UserRequest): Promise<void> {
     return this.saveProductFavoriteAction.execute(body, request.user.currentLocale);
   }

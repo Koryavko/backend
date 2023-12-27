@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { URLHelper } from '../../utillity/helpers/url.helper';
 import { DomainQueryParamTypeEnum } from '../enums/domain-query-param-type.enum';
 import { DomainImportantQueryParamRepository } from '../../../infrastructure/database/repositories/domains/domain-important-query-param.repository';
@@ -6,6 +6,8 @@ import { DomainImportantQueryParamsEntity } from '../../domains/entities/domain-
 
 @Injectable()
 export class ProductUrlService {
+  private readonly logger = new Logger(ProductUrlService.name);
+
   constructor(private readonly domainImportantQueryParamRepository: DomainImportantQueryParamRepository) {}
 
   private isParamImportant(importantQueryParams: DomainImportantQueryParamsEntity[], param: string): boolean {
@@ -57,6 +59,8 @@ export class ProductUrlService {
         return true;
       }
     }
+
+    return false;
   }
 
   private getHash(urlObject: URL, importantQueryParams: DomainImportantQueryParamsEntity[]): string {
@@ -68,24 +72,32 @@ export class ProductUrlService {
         return urlObject.hash;
       }
     }
+
+    return '';
   }
 
   public async transformUrl(url: string): Promise<string> {
-    const urlWithProtocol = url.startsWith('http') ? url : `https://${url}`;
-    const urlObject = new URL(urlWithProtocol);
-    urlObject.protocol = 'https';
+    try {
+      const urlWithProtocol = url.startsWith('http') ? url : `https://${url}`;
+      const urlObject = new URL(urlWithProtocol);
+      urlObject.protocol = 'https';
 
-    const domain = URLHelper.extractDomain(urlObject.toString());
-    const importantQueryParams = await this.domainImportantQueryParamRepository.findByDomainName(domain);
-    if (!importantQueryParams) {
-      return `${urlObject.protocol}//${urlObject.hostname}${urlObject.pathname}`;
+      const domain = URLHelper.extractDomain(urlObject.toString());
+      const importantQueryParams = await this.domainImportantQueryParamRepository.findByDomainName(domain);
+      if (!importantQueryParams) {
+        return `${urlObject.protocol}//${urlObject.hostname}${urlObject.pathname}`;
+      }
+
+      const searchParamsReplacement = new URLSearchParams();
+      const hasParams = this.checkHasParam(importantQueryParams, urlObject, searchParamsReplacement);
+      const hash = this.getHash(urlObject, importantQueryParams);
+      const queryString = hasParams ? `?${searchParamsReplacement.toString()}` : '';
+
+      return `${urlObject.protocol}//${urlObject.hostname}${urlObject.pathname}${queryString}${hash}`.trim();
+    } catch (e) {
+      this.logger.error(`Error when transforming url. Message: ${e.message}`, e.stack);
+
+      throw e;
     }
-
-    const searchParamsReplacement = new URLSearchParams();
-    const hasParams = this.checkHasParam(importantQueryParams, urlObject, searchParamsReplacement);
-    const hash = this.getHash(urlObject, importantQueryParams);
-    const queryString = hasParams ? `?${searchParamsReplacement.toString()}` : '';
-
-    return `${urlObject.protocol}//${urlObject.hostname}${urlObject.pathname}${queryString}${hash}`;
   }
 }

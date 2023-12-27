@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
+import { DomainQueryParamTypeEnum } from '../../../domain/products/enums/domain-query-param-type.enum';
 
 export class CreateDomainImportantQueryParamsTable1703621170272 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -24,8 +25,14 @@ export class CreateDomainImportantQueryParamsTable1703621170272 implements Migra
             isNullable: false,
           },
           {
-            name: 'params',
+            name: 'param',
             type: 'varchar(1028)',
+            isNullable: false,
+          },
+          {
+            name: 'type',
+            type: 'enum',
+            enum: Object.values(DomainQueryParamTypeEnum),
             isNullable: false,
           },
           {

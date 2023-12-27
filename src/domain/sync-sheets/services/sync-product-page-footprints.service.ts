@@ -52,7 +52,6 @@ export class SyncProductPageFootprintsService implements SyncSheetInterface {
         }
 
         const productPageFootprintEntity = new ProductPageFootprintEntity(domain, domainEntity, footprint, true);
-        console.log(productPageFootprintEntity, 'productPageFootprintEntity');
         await this.productPageFootprintRepository.createProductPageFootprint(productPageFootprintEntity);
       } catch (e) {
         this.logger.error(`Error while saving product page footprint: ${e.message}`, e.stack);
