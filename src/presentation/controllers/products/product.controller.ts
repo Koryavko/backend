@@ -24,7 +24,6 @@ import { SaveFavoriteProductRequest } from '../../requests/products/save-favorit
 import { UserRequest } from '../../../infrastructure/external/modules/express/user.request';
 import { SaveProductFavoriteAction } from '../../../application/products/save-product-favorite.action';
 import { ProductParseRequest } from '../../requests/products/product-parse.request';
-import { Throttle } from '@nestjs/throttler';
 import { ProductParseAction } from '../../../application/products/product-parse.action';
 
 @Controller('products')
@@ -57,7 +56,6 @@ export class ProductController {
   @ApiBody({ type: ProductParseRequest })
   @ApiUnprocessableEntityResponse({ type: UnprocessableErrorResponse, description: 'Validation error' })
   @ApiNotFoundResponse({ description: 'Product page not found', type: NotFoundResponse })
-  @Throttle({ default: { ttl: 60, limit: 1 } })
   public async handleProductParse(@Body() body: ProductParseRequest): Promise<void> {
     return this.productParseAction.execute(body);
   }
