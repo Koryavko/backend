@@ -61,5 +61,12 @@ export const ProductMapper = new EntitySchema<ProductEntity>({
       target: 'ProductColorEntity',
       inverseSide: 'product',
     },
+    domain: {
+      type: 'many-to-one',
+      target: 'DomainEntity',
+      joinColumn: {
+        name: 'domain_id',
+      },
+    },
   },
 });

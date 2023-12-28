@@ -7,6 +7,8 @@ import { ProductRepository } from '../../infrastructure/database/repositories/pr
 import { ProductEntity } from '../../domain/products/entities/product.entity';
 import { ProductFavoriteService } from '../../domain/products/services/product-favorite.service';
 import { UserEntity } from '../../domain/users/entities/user.entity';
+import { DomainRepository } from '../../infrastructure/database/repositories/domains/domain.repository';
+import { DomainEntity } from '../../domain/domains/entities/domain.entity';
 
 @Injectable()
 export class SaveProductFavoriteAction {
@@ -17,6 +19,7 @@ export class SaveProductFavoriteAction {
     private readonly productService: ProductService,
     private readonly productRepository: ProductRepository,
     private readonly productFavoriteService: ProductFavoriteService,
+    private readonly domainRepository: DomainRepository,
   ) {}
 
   public async execute(body: SaveFavoriteProductRequest, user: UserEntity): Promise<void> {
@@ -32,15 +35,18 @@ export class SaveProductFavoriteAction {
     body.url = await this.productUrlService.transformUrl(body.url);
     const urls = URLHelper.getUrlWWW(body.url);
     let product: ProductEntity;
-    [product, body.currency] = await Promise.all([
+    let domain: DomainEntity;
+
+    [product, body.currency, domain] = await Promise.all([
       this.productRepository.findByUrls(urls),
       body.currency || this.productService.getDefaultCurrency(body.url),
+      this.domainRepository.findOneByDomain(URLHelper.extractDomain(body.url)),
     ]);
 
     if (product) {
       product = await this.productService.updateProduct(product, body);
     } else {
-      product = await this.productService.createProduct(body);
+      product = await this.productService.createProduct(body, domain);
     }
 
     try {

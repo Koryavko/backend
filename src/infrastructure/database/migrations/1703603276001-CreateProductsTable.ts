@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
 
 export class CreateProductsTable1703603276001 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -12,6 +12,11 @@ export class CreateProductsTable1703603276001 implements MigrationInterface {
             isPrimary: true,
             isGenerated: true,
             generationStrategy: 'increment',
+          },
+          {
+            name: 'domain_id',
+            type: 'bigint',
+            isNullable: false,
           },
           {
             name: 'title',
@@ -58,6 +63,23 @@ export class CreateProductsTable1703603276001 implements MigrationInterface {
         ],
       }),
       true,
+    );
+
+    await queryRunner.createForeignKey(
+      'products',
+      new TableForeignKey({
+        columnNames: ['domain_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'domains',
+      }),
+    );
+
+    await queryRunner.createIndex(
+      'products',
+      new TableIndex({
+        name: 'products_domain_id_index',
+        columnNames: ['domain_id'],
+      }),
     );
 
     await queryRunner.createIndex(

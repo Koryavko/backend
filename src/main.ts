@@ -10,6 +10,7 @@ import * as basicAuth from 'express-basic-auth';
 import { LoggingInterceptor } from './infrastructure/rest/interseptors/logging.interceptor';
 import { GlobalExceptionFilter } from './infrastructure/rest/filters/global-exception.filter';
 import { ValidationFormatPipe } from './infrastructure/rest/pipes/validation-format.pipe';
+import { TimeoutInterceptor } from './infrastructure/rest/interseptors/timeout.interceptor';
 
 declare const module: any;
 
@@ -45,6 +46,7 @@ async function bootstrap(): Promise<void> {
      */
 
     app.useGlobalInterceptors(new LoggingInterceptor());
+    app.useGlobalInterceptors(new TimeoutInterceptor());
     app.useGlobalFilters(new GlobalExceptionFilter());
     app.useGlobalPipes(new ValidationFormatPipe());
     app.useGlobalPipes(

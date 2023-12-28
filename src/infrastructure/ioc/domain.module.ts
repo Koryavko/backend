@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DomainController } from '../../presentation/controllers/domain.controller';
+import { DomainController } from '../../presentation/controllers/domains/domain.controller';
 import { UserModule } from './user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DomainMapper } from '../database/mappers/domains/domain.mapper';

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { GoogleSheetRepository } from '../database/repositories/sync-sheets/google-sheet.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoogleSheetMapper } from '../database/mappers/sync-sheets/google-sheet.mapper';
-import { SyncController } from '../../presentation/controllers/sync.controller';
+import { SyncController } from '../../presentation/controllers/sync/sync.controller';
 import { UserModule } from './user.module';
 import { DomainModule } from './domain.module';
 import { SyncSheetAction } from '../../application/sync/sync-sheet.action';

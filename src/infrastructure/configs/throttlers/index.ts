@@ -27,7 +27,7 @@ export class ThrottlersConfig implements ThrottlerOptionsFactory {
       throttlers: [
         {
           name: 'short',
-          ttl: 1000,
+          ttl: 1000, // 1 second
           limit: 20,
         },
         {

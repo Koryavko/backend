@@ -1,9 +1,12 @@
 import { ProductPriceEntity } from './product-price.entity';
 import { ProductColorEntity } from './product-color.entity';
 import { ProductSizeEntity } from './product-size.entity';
+import { DomainEntity } from '../../domains/entities/domain.entity';
 
 export class ProductEntity {
   public id: number;
+
+  public domain: DomainEntity;
 
   public title: string;
 
@@ -26,6 +29,7 @@ export class ProductEntity {
   public updatedAt: Date;
 
   constructor(
+    domain: DomainEntity,
     title: string,
     url: string,
     prices: ProductPriceEntity[],
@@ -35,6 +39,7 @@ export class ProductEntity {
     image: string,
     ean: string,
   ) {
+    this.domain = domain;
     this.title = title;
     this.url = url;
     this.prices = prices;

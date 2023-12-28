@@ -9,17 +9,17 @@ import {
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
+import { UserGuard } from '../../../infrastructure/rest/guards/user.guard';
 import {
   AuthErrorResponse,
   ConflictErrorResponse,
   NotFoundResponse,
   TooManyRequestsResponse,
   UnprocessableErrorResponse,
-} from '../responses/response';
+} from '../../responses/response';
 import { ApiTooManyRequestsResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
-import { SyncRequest } from '../requests/sync/sync.request';
-import { SyncSheetAction } from '../../application/sync/sync-sheet.action';
+import { SyncRequest } from '../../requests/sync/sync.request';
+import { SyncSheetAction } from '../../../application/sync/sync-sheet.action';
 
 @Controller('sync')
 @ApiBearerAuth()

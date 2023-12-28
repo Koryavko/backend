@@ -7,12 +7,12 @@ import {
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
-import { AuthErrorResponse, TooManyRequestsResponse, UnprocessableErrorResponse } from '../responses/response';
+import { UserGuard } from '../../../infrastructure/rest/guards/user.guard';
+import { AuthErrorResponse, TooManyRequestsResponse, UnprocessableErrorResponse } from '../../responses/response';
 import { ApiTooManyRequestsResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
-import { GetProductParseRulesResponse } from '../responses/yaml-schemas/get-product-parse-rules.response';
-import { DomainInQueryRequest } from '../requests/yaml-schemas/domain-in-query.request';
-import { GetProductParseRulesAction } from '../../application/yaml-schemas/get-product-parse-rules.action';
+import { GetProductParseRulesResponse } from '../../responses/yaml-schemas/get-product-parse-rules.response';
+import { DomainInQueryRequest } from '../../requests/yaml-schemas/domain-in-query.request';
+import { GetProductParseRulesAction } from '../../../application/yaml-schemas/get-product-parse-rules.action';
 
 @Controller('domains')
 @ApiBearerAuth()

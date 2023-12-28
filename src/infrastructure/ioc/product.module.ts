@@ -8,7 +8,7 @@ import { ProductRepository } from '../database/repositories/products/product.rep
 import { ProductPriceRepository } from '../database/repositories/products/product-price.repository';
 import { ProductSizeRepository } from '../database/repositories/products/product-size.repository';
 import { ProductColorRepository } from '../database/repositories/products/product-color.repository';
-import { ProductController } from '../../presentation/controllers/product.controller';
+import { ProductController } from '../../presentation/controllers/products/product.controller';
 import { UserModule } from './user.module';
 import { SaveProductFavoriteAction } from '../../application/products/save-product-favorite.action';
 import { ProductPageFootprintModule } from './product-page-footprint.module';
@@ -19,6 +19,7 @@ import { YamlModule } from './yaml.module';
 import { ProductFavoriteMapper } from '../database/mappers/products/product-favorite.mapper';
 import { ProductFavoriteRepository } from '../database/repositories/products/product-favorite.repository';
 import { ProductFavoriteService } from '../../domain/products/services/product-favorite.service';
+import { ProductParseAction } from '../../application/products/product-parse.action';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { ProductFavoriteService } from '../../domain/products/services/product-f
     ProductService,
     ProductFavoriteRepository,
     ProductFavoriteService,
+    ProductParseAction,
   ],
 })
 export class ProductModule {}

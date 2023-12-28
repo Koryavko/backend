@@ -1,11 +1,11 @@
 import { Body, Controller, Post, Req } from '@nestjs/common';
-import { InstallExtensionRequest } from '../requests/users/install-extension.request';
+import { InstallExtensionRequest } from '../../requests/users/install-extension.request';
 import { ApiCreatedResponse, ApiOperation, ApiTags, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
-import { InstallExtensionResponse } from '../responses/users/install-extension.response';
-import { TooManyRequestsResponse, UnprocessableErrorResponse } from '../responses/response';
-import { InstallExtensionAction } from '../../application/users/install-extension.action';
+import { InstallExtensionResponse } from '../../responses/users/install-extension.response';
+import { TooManyRequestsResponse, UnprocessableErrorResponse } from '../../responses/response';
+import { InstallExtensionAction } from '../../../application/users/install-extension.action';
 import { Request } from 'express';
-import { Locale } from '../../infrastructure/decorators/locale.decorator';
+import { Locale } from '../../../infrastructure/decorators/locale.decorator';
 import { ApiTooManyRequestsResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 
 @Controller('users')

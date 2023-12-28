@@ -10,6 +10,7 @@ import { ProductColorRepository } from '../../../infrastructure/database/reposit
 import { ProductSizeEntity } from '../entities/product-size.entity';
 import { ProductColorEntity } from '../entities/product-color.entity';
 import { YamlSchemaRepository } from '../../../infrastructure/database/repositories/yaml-schemas/yaml-schema.repository';
+import { DomainEntity } from '../../domains/entities/domain.entity';
 
 @Injectable()
 export class ProductService {
@@ -87,8 +88,9 @@ export class ProductService {
     const lastPrice = productSizes.length ? productSizes[productSizes.length - 1] : null;
     const checkPrice = Number(lastPrice.price) !== Number(body.price ?? 0);
     const checkCurrency = lastPrice.currency.toLowerCase() !== body.currency.toLowerCase();
+
     if (!lastPrice || checkPrice || checkCurrency) {
-      productSizes.push(new ProductPriceEntity(body.price, body.currency));
+      productSizes.push(new ProductPriceEntity(body.price, currency));
     }
 
     return productSizes;
@@ -115,12 +117,22 @@ export class ProductService {
     return product;
   }
 
-  public async createProduct(body: SaveFavoriteProductRequest): Promise<ProductEntity> {
+  public async createProduct(body: SaveFavoriteProductRequest, domain: DomainEntity): Promise<ProductEntity> {
     const prices = new ProductPriceEntity(body.price, body.currency);
     const sizes = body.sizes.map((item) => new ProductSizeEntity(item.size, item.availability));
     const colors = body.colors.map((item) => new ProductColorEntity(item.color, item.availability));
 
-    return new ProductEntity(body.title, body.url, [prices], body.availability, colors, sizes, body.image, body.ean);
+    return new ProductEntity(
+      domain,
+      body.title,
+      body.url,
+      [prices],
+      body.availability,
+      colors,
+      sizes,
+      body.image,
+      body.ean,
+    );
   }
 
   public async getDefaultCurrency(url: string): Promise<string> {

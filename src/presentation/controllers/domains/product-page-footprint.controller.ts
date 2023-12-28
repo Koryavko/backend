@@ -7,12 +7,12 @@ import {
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
-import { AuthErrorResponse, TooManyRequestsResponse, UnprocessableErrorResponse } from '../responses/response';
+import { UserGuard } from '../../../infrastructure/rest/guards/user.guard';
+import { AuthErrorResponse, TooManyRequestsResponse, UnprocessableErrorResponse } from '../../responses/response';
 import { ApiTooManyRequestsResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
-import { DomainInQueryRequest } from '../requests/yaml-schemas/domain-in-query.request';
-import { FootprintsResponse } from '../responses/product-page-footprints/footprints.response';
-import { GetProductPageFootprintAction } from '../../application/product-page-footprints/get-product-page-footprint.action';
+import { DomainInQueryRequest } from '../../requests/yaml-schemas/domain-in-query.request';
+import { FootprintsResponse } from '../../responses/product-page-footprints/footprints.response';
+import { GetProductPageFootprintAction } from '../../../application/product-page-footprints/get-product-page-footprint.action';
 
 @Controller('domains')
 @ApiBearerAuth()

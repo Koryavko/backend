@@ -1,13 +1,13 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { UserRequest } from '../../infrastructure/external/modules/express/user.request';
-import { UserGuard } from '../../infrastructure/rest/guards/user.guard';
+import { UserRequest } from '../../../infrastructure/external/modules/express/user.request';
+import { UserGuard } from '../../../infrastructure/rest/guards/user.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { AuthErrorResponse, TooManyRequestsResponse } from '../responses/response';
+import { AuthErrorResponse, TooManyRequestsResponse } from '../../responses/response';
 import { ApiTooManyRequestsResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
-import { GetPopularDomainsResponse } from '../responses/domains/get-popular-domains.response';
-import { GetPopularDomainsAction } from '../../application/domains/get-popular-domains.action';
-import { GetDomainListResponse } from '../responses/domains/get-domain-list.response';
-import { GetDomainListAction } from '../../application/domains/get-domain-list.action';
+import { GetPopularDomainsResponse } from '../../responses/domains/get-popular-domains.response';
+import { GetPopularDomainsAction } from '../../../application/domains/get-popular-domains.action';
+import { GetDomainListResponse } from '../../responses/domains/get-domain-list.response';
+import { GetDomainListAction } from '../../../application/domains/get-domain-list.action';
 
 @Controller('domains')
 @ApiBearerAuth()
