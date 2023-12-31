@@ -9,9 +9,11 @@ import { GetPopularDomainsAction } from '../../application/domains/get-popular-d
 import { GetDomainListAction } from '../../application/domains/get-domain-list.action';
 import { DomainImportantQueryParamMapper } from '../database/mappers/domains/domain-important-query-param.mapper';
 import { DomainImportantQueryParamRepository } from '../database/repositories/domains/domain-important-query-param.repository';
+import { DomainStatMapper } from '../database/mappers/domains/domain-stat.mapper';
+import { DomainStatRepository } from '../database/repositories/domains/domain-stat.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DomainMapper, DomainImportantQueryParamMapper]), UserModule],
+  imports: [TypeOrmModule.forFeature([DomainMapper, DomainImportantQueryParamMapper, DomainStatMapper]), UserModule],
   controllers: [DomainController],
   providers: [
     DomainRepository,
@@ -19,7 +21,8 @@ import { DomainImportantQueryParamRepository } from '../database/repositories/do
     GetPopularDomainsAction,
     GetDomainListAction,
     DomainImportantQueryParamRepository,
+    DomainStatRepository,
   ],
-  exports: [DomainRepository, DomainImportantQueryParamRepository],
+  exports: [UserModule, DomainRepository, DomainImportantQueryParamRepository, DomainStatRepository],
 })
 export class DomainModule {}

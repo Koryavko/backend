@@ -9,12 +9,10 @@ import { ProductPriceRepository } from '../database/repositories/products/produc
 import { ProductSizeRepository } from '../database/repositories/products/product-size.repository';
 import { ProductColorRepository } from '../database/repositories/products/product-color.repository';
 import { ProductController } from '../../presentation/controllers/products/product.controller';
-import { UserModule } from './user.module';
 import { SaveProductFavoriteAction } from '../../application/products/save-product-favorite.action';
 import { ProductPageFootprintModule } from './product-page-footprint.module';
 import { ProductUrlService } from '../../domain/products/services/product-url.service';
 import { ProductService } from '../../domain/products/services/product.service';
-import { DomainModule } from './domain.module';
 import { YamlModule } from './yaml.module';
 import { ProductFavoriteMapper } from '../database/mappers/products/product-favorite.mapper';
 import { ProductFavoriteRepository } from '../database/repositories/products/product-favorite.repository';
@@ -30,9 +28,7 @@ import { ProductParseAction } from '../../application/products/product-parse.act
       ProductColorMapper,
       ProductFavoriteMapper,
     ]),
-    UserModule,
     ProductPageFootprintModule,
-    DomainModule,
     YamlModule,
   ],
   controllers: [ProductController],
@@ -48,5 +44,6 @@ import { ProductParseAction } from '../../application/products/product-parse.act
     ProductFavoriteService,
     ProductParseAction,
   ],
+  exports: [ProductFavoriteRepository],
 })
 export class ProductModule {}

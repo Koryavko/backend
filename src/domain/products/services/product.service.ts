@@ -11,6 +11,7 @@ import { ProductSizeEntity } from '../entities/product-size.entity';
 import { ProductColorEntity } from '../entities/product-color.entity';
 import { YamlSchemaRepository } from '../../../infrastructure/database/repositories/yaml-schemas/yaml-schema.repository';
 import { DomainEntity } from '../../domains/entities/domain.entity';
+import { ProductParseRequest } from '../../../presentation/requests/products/product-parse.request';
 
 @Injectable()
 export class ProductService {
@@ -40,7 +41,10 @@ export class ProductService {
     return false;
   }
 
-  private updateProductSize(productSizes: ProductSizeEntity[], body: SaveFavoriteProductRequest): ProductSizeEntity[] {
+  private updateProductSize(
+    productSizes: ProductSizeEntity[],
+    body: ProductParseRequest | SaveFavoriteProductRequest,
+  ): ProductSizeEntity[] {
     const sizes = [];
 
     for (const productSize of productSizes) {
@@ -61,7 +65,7 @@ export class ProductService {
 
   private updateProductColor(
     productColors: ProductColorEntity[],
-    body: SaveFavoriteProductRequest,
+    body: ProductParseRequest | SaveFavoriteProductRequest,
   ): ProductColorEntity[] {
     const colors = [];
 
@@ -83,20 +87,23 @@ export class ProductService {
 
   private updateProductPrice(
     productSizes: ProductPriceEntity[],
-    body: SaveFavoriteProductRequest,
+    body: ProductParseRequest | SaveFavoriteProductRequest,
   ): ProductPriceEntity[] {
     const lastPrice = productSizes.length ? productSizes[productSizes.length - 1] : null;
     const checkPrice = Number(lastPrice.price) !== Number(body.price ?? 0);
     const checkCurrency = lastPrice.currency.toLowerCase() !== body.currency.toLowerCase();
 
     if (!lastPrice || checkPrice || checkCurrency) {
-      productSizes.push(new ProductPriceEntity(body.price, currency));
+      productSizes.push(new ProductPriceEntity(body.price, body.currency));
     }
 
     return productSizes;
   }
 
-  public async updateProduct(product: ProductEntity, body: SaveFavoriteProductRequest): Promise<ProductEntity> {
+  public async updateProduct(
+    product: ProductEntity,
+    body: ProductParseRequest | SaveFavoriteProductRequest,
+  ): Promise<ProductEntity> {
     product.ean = body.ean ?? product.ean;
     product.title = body.title ?? product.title;
     product.image = body.image ?? product.image;
